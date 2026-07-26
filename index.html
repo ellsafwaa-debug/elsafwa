@@ -1,377 +1,1221 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Marwa Mousa Admin</title>
-
+<title>El Safwa System | Inventory Management</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  /* ============================================================
+     DESIGN TOKENS
+     ============================================================ */
+  :root{
+    --sidebar-bg:#151b28;
+    --sidebar-bg-soft:#1c2436;
+    --sidebar-hover:#232c42;
+    --sidebar-text:#aab2c5;
+    --sidebar-text-active:#ffffff;
+    --accent:#12a594;
+    --accent-dark:#0d8a7b;
+    --accent-soft:rgba(18,165,148,0.14);
+    --danger:#e5484d;
+    --danger-soft:rgba(229,72,77,0.12);
+    --success:#12a594;
+    --success-soft:rgba(18,165,148,0.12);
+    --warning:#f0a020;
 
-body{
-font-family:"Georgia",serif;
-background:#efe6d6;
-margin:0;
-padding:20px;
-text-align:center;
-overflow-x:hidden;
-}
+    --bg:#f5f6f8;
+    --surface:#ffffff;
+    --border:#e6e8ec;
+    --text-primary:#1a2233;
+    --text-secondary:#6b7385;
+    --text-muted:#9aa1b1;
 
-h1{
-color:#5a4632;
-letter-spacing:3px;
-margin-bottom:35px;
-font-weight:400;
-font-size:26px;
-}
+    --radius-sm:8px;
+    --radius-md:14px;
+    --radius-lg:20px;
 
-#loginBox{
-max-width:400px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 10px 20px rgba(0,0,0,0.08);
-display:flex;
-flex-direction:column;
-gap:15px;
-}
+    --shadow-sm:0 1px 2px rgba(16,24,40,0.05);
+    --shadow-md:0 4px 16px rgba(16,24,40,0.08);
+    --shadow-lg:0 12px 32px rgba(16,24,40,0.12);
 
-.grid{
-display:none;
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-gap:15px;
-max-width:900px;
-margin:auto;
-}
+    --font-display:'Manrope', 'Inter', sans-serif;
+    --font-body:'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-.card{
-background:white;
-padding:22px 12px;
-border-radius:12px;
-color:#4a3b2a;
-font-size:15px;
-letter-spacing:1px;
-text-transform:uppercase;
-cursor:pointer;
-border:1px solid rgba(0,0,0,0.05);
-transition:.25s;
-}
+    --transition:180ms cubic-bezier(0.4,0,0.2,1);
+  }
 
-.card:hover{
-transform:translateY(-4px);
-background:#f6f1e8;
-}
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--text-primary);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+  }
+  ::selection{ background:var(--accent-soft); }
+  button{ font-family:inherit; }
+  ::-webkit-scrollbar{ width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb{ background:#d6d9e0; border-radius:8px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
 
-form{
-margin-top:25px;
-display:flex;
-flex-direction:column;
-gap:14px;
-max-width:420px;
-margin-left:auto;
-margin-right:auto;
-background:white;
-padding:22px;
-border-radius:14px;
-display:none;
-}
+  /* ============================================================
+     LOGIN SCREEN
+     ============================================================ */
+  #login-screen{
+    position:fixed; inset:0;
+    display:flex;
+    background:var(--sidebar-bg);
+    z-index:100;
+  }
+  .login-brand-panel{
+    flex:1.1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:64px 72px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(18,165,148,0.20), transparent 45%),
+      radial-gradient(circle at 85% 85%, rgba(18,165,148,0.12), transparent 50%),
+      var(--sidebar-bg);
+  }
+  .login-brand-panel::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:42px 42px;
+    mask-image:radial-gradient(circle at 30% 30%, black, transparent 70%);
+  }
+  .login-mark{
+    display:flex; align-items:center; gap:14px;
+    position:relative; z-index:1;
+    margin-bottom:48px;
+  }
+  .login-mark .logo-sq{
+    width:52px; height:52px; border-radius:14px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:800; font-size:20px; color:#fff;
+    box-shadow:0 8px 20px rgba(18,165,148,0.35);
+  }
+  .login-mark .logo-word{
+    font-family:var(--font-display); font-weight:700; font-size:20px; color:#fff; letter-spacing:0.2px;
+  }
+  .login-headline{
+    position:relative; z-index:1;
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:44px;
+    line-height:1.15;
+    color:#ffffff;
+    max-width:480px;
+    margin:0 0 18px 0;
+  }
+  .login-headline span{ color:var(--accent); }
+  .login-sub{
+    position:relative; z-index:1;
+    color:var(--sidebar-text);
+    font-size:15.5px;
+    max-width:400px;
+    line-height:1.6;
+  }
+  .login-stats{
+    position:relative; z-index:1;
+    display:flex; gap:36px;
+    margin-top:56px;
+    padding-top:28px;
+    border-top:1px solid rgba(255,255,255,0.08);
+  }
+  .login-stats div b{
+    display:block; font-family:var(--font-display); font-size:22px; color:#fff; font-weight:700;
+  }
+  .login-stats div span{ font-size:12.5px; color:var(--sidebar-text); }
 
-input,textarea{
-padding:14px;
-border:none;
-border-bottom:1px solid #bca98b;
-background:transparent;
-font-size:16px;
-outline:none;
-width:100%;
-}
+  .login-form-panel{
+    width:460px;
+    flex-shrink:0;
+    background:var(--surface);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:56px 56px;
+  }
+  .login-form-title{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:26px;
+    margin:0 0 6px 0;
+    color:var(--text-primary);
+  }
+  .login-form-desc{
+    color:var(--text-secondary);
+    font-size:14.5px;
+    margin:0 0 34px 0;
+  }
+  .field-group{ margin-bottom:20px; }
+  .field-group label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-primary);
+    margin-bottom:8px;
+  }
+  .field-group input{
+    width:100%;
+    padding:13px 14px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    font-size:14.5px;
+    background:#fafbfc;
+    color:var(--text-primary);
+    transition:var(--transition);
+    outline:none;
+  }
+  .field-group input:focus{
+    border-color:var(--accent);
+    background:#fff;
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .btn-signin{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:var(--radius-sm);
+    background:var(--accent);
+    color:#fff;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:8px;
+    transition:var(--transition);
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .btn-signin:hover{ background:var(--accent-dark); transform:translateY(-1px); box-shadow:var(--shadow-md); }
+  .btn-signin:active{ transform:translateY(0); }
+  .btn-signin:disabled{ opacity:0.65; cursor:not-allowed; transform:none; }
 
-button{
-padding:14px;
-background:#7b6248;
-border:none;
-color:white;
-font-size:15px;
-cursor:pointer;
-border-radius:10px;
-}
+  .login-error{
+    display:none;
+    align-items:center; gap:8px;
+    background:var(--danger-soft);
+    color:var(--danger);
+    font-size:13.5px;
+    font-weight:500;
+    padding:12px 14px;
+    border-radius:var(--radius-sm);
+    margin-bottom:18px;
+  }
+  .login-error.show{ display:flex; animation:fadeSlideIn 220ms ease; }
 
-button:hover{
-background:#5a4632;
-}
+  .spinner{
+    width:16px; height:16px;
+    border:2px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+    border-radius:50%;
+    animation:spin 0.7s linear infinite;
+    display:none;
+  }
+  .spinner.show{ display:inline-block; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @keyframes fadeSlideIn{ from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:translateY(0); } }
 
-.preview{
-margin-top:10px;
-max-width:120px;
-border-radius:10px;
-display:none;
-margin:auto;
-}
+  .login-note{
+    margin-top:22px;
+    font-size:12.5px;
+    color:var(--text-muted);
+    text-align:center;
+  }
 
-.logoutBtn{
-margin-bottom:20px;
-background:#a33;
-}
+  /* ============================================================
+     APP SHELL
+     ============================================================ */
+  #app-shell{
+    display:none;
+    height:100vh;
+    width:100vw;
+  }
+  #app-shell.active{ display:flex; }
 
-table{
-background:white;
-margin:auto;
-border-collapse:collapse;
-width:90%;
-}
+  .sidebar{
+    width:260px;
+    flex-shrink:0;
+    background:var(--sidebar-bg);
+    display:flex;
+    flex-direction:column;
+    padding:22px 16px;
+  }
+  .sidebar-brand{
+    display:flex; align-items:center; gap:12px;
+    padding:8px 10px 26px 10px;
+    border-bottom:1px solid rgba(255,255,255,0.07);
+    margin-bottom:20px;
+  }
+  .sidebar-brand .logo-sq{
+    width:40px; height:40px; border-radius:11px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-weight:800; font-size:16px; color:#fff;
+    flex-shrink:0;
+  }
+  .sidebar-brand .brand-text b{
+    display:block; color:#fff; font-family:var(--font-display); font-size:15px; font-weight:700;
+  }
+  .sidebar-brand .brand-text span{
+    display:block; color:var(--sidebar-text); font-size:11px; margin-top:1px;
+  }
 
-th,td{
-padding:10px;
-border:1px solid #ddd;
-}
+  .nav-section-label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:#616b83;
+    font-weight:700;
+    padding:0 12px;
+    margin:14px 0 8px 0;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 12px;
+    border-radius:10px;
+    color:var(--sidebar-text);
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    margin-bottom:3px;
+    transition:var(--transition);
+    user-select:none;
+    position:relative;
+  }
+  .nav-item .nav-icon{
+    width:19px; height:19px;
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .nav-item:hover{ background:var(--sidebar-hover); color:var(--sidebar-text-active); }
+  .nav-item.active{ background:var(--accent-soft); color:#fff; }
+  .nav-item.active::before{
+    content:"";
+    position:absolute; left:-16px; top:8px; bottom:8px; width:3px;
+    background:var(--accent);
+    border-radius:0 4px 4px 0;
+  }
+  .nav-item.disabled{ opacity:0.4; cursor:not-allowed; }
+  .nav-item.disabled:hover{ background:none; color:var(--sidebar-text); }
+  .nav-badge{
+    margin-left:auto;
+    font-size:9.5px;
+    font-weight:700;
+    padding:2px 6px;
+    border-radius:6px;
+    background:rgba(255,255,255,0.08);
+    color:var(--sidebar-text);
+    letter-spacing:0.02em;
+  }
 
+  .sidebar-footer{
+    margin-top:auto;
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,0.07);
+  }
+  .sidebar-user{
+    display:flex; align-items:center; gap:10px;
+    padding:8px 10px 14px 10px;
+  }
+  .sidebar-user .avatar{
+    width:34px; height:34px; border-radius:50%;
+    background:linear-gradient(135deg,#3a4560,#232c42);
+    color:#fff; display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700; flex-shrink:0;
+  }
+  .sidebar-user .user-meta b{
+    display:block; color:#fff; font-size:13px; font-weight:600;
+  }
+  .sidebar-user .user-meta span{
+    display:block; color:var(--sidebar-text); font-size:11.5px;
+  }
+
+  /* ============================================================
+     CONTENT AREA
+     ============================================================ */
+  .content-area{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:var(--bg);
+  }
+  .topbar{
+    height:68px;
+    flex-shrink:0;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 32px;
+  }
+  .topbar-title{
+    font-family:var(--font-display);
+    font-size:19px;
+    font-weight:700;
+    color:var(--text-primary);
+  }
+  .topbar-title span{
+    display:block; font-family:var(--font-body); font-weight:400; font-size:12.5px; color:var(--text-muted); margin-top:1px;
+  }
+  .topbar-date{
+    font-size:13px;
+    color:var(--text-secondary);
+    background:var(--bg);
+    padding:8px 14px;
+    border-radius:20px;
+    font-weight:500;
+  }
+
+  .page{
+    flex:1;
+    overflow-y:auto;
+    padding:32px;
+    display:none;
+    animation:pageIn 260ms ease;
+  }
+  .page.active{ display:block; }
+  @keyframes pageIn{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:translateY(0); } }
+
+  /* ---------- HOME PAGE ---------- */
+  .welcome-card{
+    background:linear-gradient(135deg, var(--sidebar-bg) 0%, #1e2942 100%);
+    border-radius:var(--radius-lg);
+    padding:40px 44px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:28px;
+  }
+  .welcome-card::before{
+    content:"";
+    position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle, rgba(18,165,148,0.35), transparent 70%);
+  }
+  .welcome-card .eyebrow{
+    font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--accent); font-weight:700; margin-bottom:10px; position:relative;
+  }
+  .welcome-card h1{
+    font-family:var(--font-display);
+    font-size:32px; font-weight:800; margin:0 0 8px 0; position:relative;
+  }
+  .welcome-card p{
+    font-size:14.5px; color:var(--sidebar-text); margin:0; position:relative; max-width:520px; line-height:1.6;
+  }
+
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:18px;
+    margin-bottom:28px;
+  }
+  .stat-card{
+    background:var(--surface);
+    border-radius:var(--radius-md);
+    padding:22px 24px;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-sm);
+    transition:var(--transition);
+  }
+  .stat-card:hover{ box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .stat-card .stat-icon{
+    width:38px; height:38px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:14px;
+  }
+  .stat-card .stat-label{ font-size:12.5px; color:var(--text-secondary); font-weight:600; margin-bottom:4px; }
+  .stat-card .stat-value{ font-family:var(--font-display); font-size:24px; font-weight:800; color:var(--text-primary); }
+
+  .info-card{
+    background:var(--surface);
+    border-radius:var(--radius-md);
+    border:1px solid var(--border);
+    padding:26px 28px;
+    box-shadow:var(--shadow-sm);
+  }
+  .info-card h3{
+    font-family:var(--font-display);
+    font-size:15px; margin:0 0 16px 0; color:var(--text-primary);
+  }
+  .info-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+    font-size:14px;
+  }
+  .info-row:last-child{ border-bottom:none; }
+  .info-row .label{ color:var(--text-secondary); }
+  .info-row .value{ font-weight:600; color:var(--text-primary); }
+
+  /* ---------- STOCK PAGE ---------- */
+  .stock-toolbar{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .search-box{
+    position:relative;
+    flex:1;
+    min-width:260px;
+    max-width:420px;
+  }
+  .search-box input{
+    width:100%;
+    padding:12px 16px 12px 42px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:var(--surface);
+    font-size:14px;
+    outline:none;
+    transition:var(--transition);
+  }
+  .search-box input:focus{ border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft); }
+  .search-box .icon{
+    position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    color:var(--text-muted); pointer-events:none;
+  }
+  .toolbar-meta{
+    display:flex; align-items:center; gap:14px;
+    font-size:13px; color:var(--text-secondary);
+  }
+  .btn-refresh{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 16px;
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-sm);
+    font-size:13.5px; font-weight:600; color:var(--text-primary);
+    cursor:pointer;
+    transition:var(--transition);
+  }
+  .btn-refresh:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-refresh svg{ transition:transform 0.4s ease; }
+  .btn-refresh.spinning svg{ animation:spin 0.8s linear infinite; }
+
+  .table-card{
+    background:var(--surface);
+    border-radius:var(--radius-md);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow-sm);
+    overflow:hidden;
+  }
+  .table-scroll{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  thead th{
+    text-align:left;
+    padding:14px 20px;
+    background:#fafbfc;
+    color:var(--text-secondary);
+    font-weight:700;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  tbody td{
+    padding:14px 20px;
+    border-bottom:1px solid var(--border);
+    color:var(--text-primary);
+    white-space:nowrap;
+  }
+  tbody tr{ transition:background var(--transition); }
+  tbody tr:hover{ background:#fafbfc; }
+  tbody tr:last-child td{ border-bottom:none; }
+  .code-pill{
+    font-family:'SFMono-Regular', Consolas, monospace;
+    font-size:12.5px;
+    background:var(--bg);
+    padding:3px 9px;
+    border-radius:6px;
+    color:var(--text-secondary);
+    font-weight:600;
+  }
+  .stock-value{ font-weight:700; }
+  .stock-value.low{ color:var(--danger); }
+  .stock-value.ok{ color:var(--success); }
+  .status-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px;
+  }
+  .status-dot.low{ background:var(--danger); }
+  .status-dot.ok{ background:var(--success); }
+  .notes-cell{
+    max-width:220px; overflow:hidden; text-overflow:ellipsis; color:var(--text-secondary); white-space:nowrap;
+  }
+
+  .empty-state, .loading-state{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:70px 20px;
+    color:var(--text-muted);
+    text-align:center;
+  }
+  .empty-state svg, .loading-state svg{ margin-bottom:16px; opacity:0.5; }
+  .empty-state h4, .loading-state h4{ font-size:15px; color:var(--text-secondary); margin:0 0 6px 0; }
+  .empty-state p, .loading-state p{ font-size:13px; margin:0; max-width:320px; }
+  .loading-state .spinner{ display:inline-block; width:26px; height:26px; border-width:3px; border-color:var(--border); border-top-color:var(--accent); margin-bottom:16px; }
+
+  .table-footer{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 20px;
+    border-top:1px solid var(--border);
+    font-size:12.5px; color:var(--text-muted);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .login-brand-panel{ display:none; }
+    .login-form-panel{ width:100%; padding:40px 28px; }
+    .sidebar{ width:76px; padding:18px 10px; }
+    .sidebar-brand .brand-text, .nav-item span.nav-label, .nav-section-label, .sidebar-user .user-meta{ display:none; }
+    .nav-item{ justify-content:center; }
+    .sidebar-user{ justify-content:center; }
+    .page{ padding:20px; }
+    .topbar{ padding:0 20px; }
+  }
+
+  .toast{
+    position:fixed; bottom:24px; right:24px;
+    background:var(--sidebar-bg); color:#fff;
+    padding:14px 20px; border-radius:var(--radius-sm);
+    font-size:13.5px; font-weight:500;
+    box-shadow:var(--shadow-lg);
+    display:flex; align-items:center; gap:10px;
+    z-index:200;
+    transform:translateY(20px); opacity:0;
+    transition:all 260ms cubic-bezier(0.4,0,0.2,1);
+    pointer-events:none;
+  }
+  .toast.show{ transform:translateY(0); opacity:1; }
+  .toast.error{ background:var(--danger); }
 </style>
-
 </head>
-
 <body>
 
-<h1>MARWA MOUSA ADMIN</h1>
+<!-- ============================================================
+     LOGIN SCREEN
+     ============================================================ -->
+<div id="login-screen">
+  <div class="login-brand-panel">
+    <div class="login-mark">
+      <div class="logo-sq">ES</div>
+      <div class="logo-word">El Safwa System</div>
+    </div>
+    <h1 class="login-headline">Inventory, <span>under control.</span></h1>
+    <p class="login-sub">One workspace to track parts, storage locations and stock levels across your warehouse — synced live with Google Sheets.</p>
+    <div class="login-stats">
+      <div><b>Live</b><span>Real-time stock sync</span></div>
+      <div><b>Secure</b><span>Google Sheets auth</span></div>
+      <div><b>ERP</b><span>Built to scale up</span></div>
+    </div>
+  </div>
+  <div class="login-form-panel">
+    <h2 class="login-form-title">Sign in</h2>
+    <p class="login-form-desc">Enter your credentials to access El Safwa System.</p>
 
-<!-- LOGIN -->
+    <div class="login-error" id="login-error">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="login-error-text">Invalid Username or Password</span>
+    </div>
 
-<div id="loginBox">
-
-<h2>Admin Login</h2>
-
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-
-<button onclick="login()" id="loginBtn">Login</button>
-
-<p id="loading" style="display:none;color:#7b6248;">Loading...</p>
-
+    <form id="login-form" autocomplete="off">
+      <div class="field-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      </div>
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn-signin" id="signin-btn">
+        <span class="spinner" id="signin-spinner"></span>
+        <span id="signin-label">Sign In</span>
+      </button>
+    </form>
+    <p class="login-note">&copy; <span id="year-note"></span> El Safwa System — Inventory Management</p>
+  </div>
 </div>
 
-<button class="logoutBtn" onclick="logout()" style="display:none" id="logoutBtn">Logout</button>
+<!-- ============================================================
+     MAIN APPLICATION SHELL
+     ============================================================ -->
+<div id="app-shell">
 
-<div class="grid" id="dashboard">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo-sq">ES</div>
+      <div class="brand-text">
+        <b>El Safwa System</b>
+        <span>Inventory Management</span>
+      </div>
+    </div>
 
-<div class="card" data-category="rings">Rings</div>
-<div class="card" data-category="earrings">Earrings</div>
-<div class="card" data-category="necklaces">Necklaces</div>
-<div class="card" data-category="bracelets">Bracelets</div>
-<div class="card" data-category="bags">Bags</div>
-<div class="card" data-category="leathers">Leathers</div>
-<div class="card" data-category="bestsellers">Best Sellers</div>
-<div class="card" data-category="beads">Beads</div>
-<div class="card" data-category="orders">Orders</div>
+    <div class="nav-section-label">Menu</div>
+    <div class="nav-item active" data-page="home">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </span>
+      <span class="nav-label">Home</span>
+    </div>
+    <div class="nav-item" data-page="stock">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      </span>
+      <span class="nav-label">Stock</span>
+    </div>
 
+    <div class="nav-section-label">Coming Soon</div>
+    <div class="nav-item disabled" title="Coming soon">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <span class="nav-label">Users</span>
+      <span class="nav-badge">SOON</span>
+    </div>
+    <div class="nav-item disabled" title="Coming soon">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </span>
+      <span class="nav-label">Transactions</span>
+      <span class="nav-badge">SOON</span>
+    </div>
+    <div class="nav-item disabled" title="Coming soon">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+      </span>
+      <span class="nav-label">Reports</span>
+      <span class="nav-badge">SOON</span>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="nav-item" id="logout-btn">
+        <span class="nav-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </span>
+        <span class="nav-label">Logout</span>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar" id="sidebar-avatar">?</div>
+        <div class="user-meta">
+          <b id="sidebar-username">—</b>
+          <span id="sidebar-role">—</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT AREA -->
+  <div class="content-area">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Home
+        <span id="topbar-subtitle">Overview of your workspace</span>
+      </div>
+      <div class="topbar-date" id="topbar-date">—</div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="page-home">
+      <div class="welcome-card">
+        <div class="eyebrow">Inventory Management System</div>
+        <h1>Welcome, <span id="home-username">User</span></h1>
+        <p id="home-role-line">Role: —</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--accent-soft); color:var(--accent);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <div class="stat-label">Current User</div>
+          <div class="stat-value" id="stat-user">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(240,160,32,0.14); color:var(--warning);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <div class="stat-label">Role</div>
+          <div class="stat-value" id="stat-role">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(90,120,255,0.12); color:#5a78ff;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="stat-label">Today's Date</div>
+          <div class="stat-value" id="stat-date">—</div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>System Information</h3>
+        <div class="info-row"><span class="label">System Name</span><span class="value">El Safwa System</span></div>
+        <div class="info-row"><span class="label">Module</span><span class="value">Inventory Management System</span></div>
+        <div class="info-row"><span class="label">Signed in as</span><span class="value" id="info-user">—</span></div>
+        <div class="info-row"><span class="label">Access level</span><span class="value" id="info-role">—</span></div>
+      </div>
+    </div>
+
+    <!-- STOCK PAGE -->
+    <div class="page" id="page-stock">
+      <div class="stock-toolbar">
+        <div class="search-box">
+          <span class="icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input type="text" id="stock-search" placeholder="Search by code, name, category or location...">
+        </div>
+        <div class="toolbar-meta">
+          <span id="stock-count-label">0 items</span>
+          <button class="btn-refresh" id="refresh-stock-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-scroll">
+          <table id="stock-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Part Name</th>
+                <th>Category</th>
+                <th>Storage Location</th>
+                <th>In Stock</th>
+                <th>Minimum Stock</th>
+                <th>Unit</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="stock-tbody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+          <div class="loading-state" id="stock-loading">
+            <span class="spinner show"></span>
+            <h4>Loading inventory…</h4>
+            <p>Fetching the latest stock data from Google Sheets.</p>
+          </div>
+          <div class="empty-state" id="stock-empty" style="display:none;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <h4>No matching items</h4>
+            <p>Try a different search term, or refresh the inventory list.</p>
+          </div>
+        </div>
+        <div class="table-footer">
+          <span id="table-footer-left">—</span>
+          <span id="table-footer-right">Synced with Google Sheets</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<form id="productForm">
-
-<h2>Add Product (<span id="categoryName"></span>)</h2>
-
-<input type="text" id="name" placeholder="Product Name" required>
-<input type="number" id="price" placeholder="Price" required>
-<textarea id="desc" placeholder="Description"></textarea>
-<input type="text" id="image" placeholder="Image URL" required>
-
-<img id="preview" class="preview">
-
-<button type="submit">Add Product</button> <button type="button" onclick="goBack()">Back</button>
-
-</form>
-
-<!-- ORDERS PAGE -->
-
-<div id="ordersPage" style="display:none">
-
-<h2>Orders</h2>
-
-<table>
-<thead>
-<tr>
-<th>Date</th>
-<th>Product</th>
-<th>Price</th>
-<th>Qty</th>
-<th>Total</th>
-<th>Customer</th>
-<th>Phone</th>
-<th>Address</th>
-</tr>
-</thead>
-
-<tbody id="ordersTable"></tbody>
-
-</table>
-
-<br>
-
-<button onclick="goBack()">Back</button>
-
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
-
-const LOGIN_API="https://script.google.com/macros/s/AKfycbw33-s_c_2rIODlgcWI3JHNAvd8dZ1GyIE2auLV0dYXQQPWP4xJw9oNilugLCDXftYs3Q/exec";
-
-const APIs={
-rings:"https://script.google.com/macros/s/AKfycbyTEQPUUpI2QEqOll3nfn_m6OhBGU6ZZC2jGm_dkUBOvlHnCTS-4DW1l9t1ZGwt2J6E/exec",
-earrings:"https://script.google.com/macros/s/AKfycbyYKkbUolvQ4XAa9JypZVkkfqxZZsxdKcgZGHJAyNVDouEQ3C6Dul9YSecm8K4_wAqu/exec",
-necklaces:"https://script.google.com/macros/s/AKfycbzV5ulAIrv3rVZy7ZlvJV-m3fFcbZH4p_xnbNb443iYxKKnLO7jktm_ZWm1wXhzRzO3/exec",
-bracelets:"https://script.google.com/macros/s/AKfycbwlkhVCMVH4knCGrj7Cwkj8gCXMbD21zXTstIuntgUdnwxy-uNSVG0HUOQ6o3MdsKSLGw/exec",
-bags:"https://script.google.com/macros/s/AKfycbzearJTBoLvGtdiX8g9bCMr4cJi286kRKZ9H-q1fCCaxvjGcuw7bve5bKtjDXwMarUUkw/exec",
-leathers:"https://script.google.com/macros/s/AKfycbz8g00g6t7ZtrLHC_b4PSbSS1v8hzLac-no6ScPDt8J2QrZEIPXAeqqo2VPAijAH8_J/exec",
-bestsellers:"https://script.google.com/macros/s/AKfycbx8tKoTEs2TsjHge4Qqjj8ALjPnvMKDqqGABFubVcOSXVmlx34nbZ9flRosW20jG0W3/exec",
-beads:"https://script.google.com/macros/s/AKfycbydWz_6EAx3_sTndrvQgEP9CjOoVUzvRDI3vaqFOcGD2UKKDz3_o985zPhEF9wSH1GkTA/exec",
-orders:"https://script.google.com/macros/s/AKfycbxq5NVzDbBiy16c_u8NMNP4p1Ot9V_8YhtMB8G34TXUJxsLgcB-TZ6ca2B9PKVfdWU/exec"
+/* ================================================================
+   CONFIG
+   Insert your Google Apps Script Web App URLs here.
+   ================================================================ */
+const CONFIG = {
+  LOGIN_API: "https://script.google.com/macros/s/AKfycbxPbzAM6hK0G2b9b-lJYkPHFTdhaweZmPTFZJ-yPB1jPd5kwrqXopstixg57lE0DI5D/exec",
+  STOCK_API: "https://script.google.com/macros/s/AKfycbyol0Ov-baoglD2xEDCXL336Bw_loUoEz9ROg_FQ6Pc-N0KdqxWydbOg-WMeMYllUWs/exec"
 };
 
-const dashboard=document.getElementById("dashboard");
-const form=document.getElementById("productForm");
-const ordersPage=document.getElementById("ordersPage");
-const categoryName=document.getElementById("categoryName");
-const loginBox=document.getElementById("loginBox");
-const logoutBtn=document.getElementById("logoutBtn");
-
-let currentCategory="";
-
-if(localStorage.getItem("adminLogin")==="true"){
-loginBox.style.display="none";
-dashboard.style.display="grid";
-logoutBtn.style.display="block";
-}
-
-async function login(){
-
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
-
-document.getElementById("loading").style.display="block";
-
-const res=await fetch(LOGIN_API,{
-method:"POST",
-headers:{ "Content-Type":"text/plain;charset=utf-8"},
-body:JSON.stringify({email,password})
-});
-
-const data=await res.json();
-
-document.getElementById("loading").style.display="none";
-
-if(data.status==="success"){
-
-localStorage.setItem("adminLogin","true");
-
-loginBox.style.display="none";
-dashboard.style.display="grid";
-logoutBtn.style.display="block";
-
-}else{
-
-alert("Wrong Email or Password");
-
-}
-
-}
-
-function logout(){
-localStorage.removeItem("adminLogin");
-location.reload();
-}
-
-dashboard.addEventListener("click",(e)=>{
-
-const card=e.target.closest(".card");
-if(!card) return;
-
-currentCategory=card.dataset.category;
-
-if(currentCategory==="orders"){
-dashboard.style.display="none";
-ordersPage.style.display="block";
-loadOrders();
-return;
-}
-
-categoryName.textContent=currentCategory;
-
-form.style.display="flex";
-dashboard.style.display="none";
-
-});
-
-function goBack(){
-form.style.display="none";
-ordersPage.style.display="none";
-dashboard.style.display="grid";
-}
-
-document.getElementById("image").addEventListener("input",function(){
-
-const preview=document.getElementById("preview");
-preview.src=this.value;
-preview.style.display="block";
-
-});
-
-form.addEventListener("submit",async function(e){
-
-e.preventDefault();
-
-const data={
-    name: document.getElementById("name").value,
-    price: document.getElementById("price").value,
-    desc: document.getElementById("desc").value,
-    image: document.getElementById("image").value
+/* ================================================================
+   APP STATE
+   Central store for session + data, ready to extend later
+   (transactions, stock-in/out, reports, dashboard, etc.)
+   ================================================================ */
+const AppState = {
+  currentUser: null,      // { name, role }
+  stockData: [],          // raw data from STOCK_API
+  filteredStock: [],      // data currently displayed (post-search)
+  isStockLoaded: false
 };
 
-await fetch(APIs[currentCategory],{
-method:"POST",
-body:JSON.stringify(data)
+/* ================================================================
+   UTILITY FUNCTIONS
+   ================================================================ */
+const Utils = {
+  todayFormatted(){
+    const d = new Date();
+    return d.toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
+  },
+
+  initials(name){
+    if(!name) return "?";
+    const parts = name.trim().split(/\s+/);
+    return parts.length > 1
+      ? (parts[0][0] + parts[1][0]).toUpperCase()
+      : parts[0].slice(0,2).toUpperCase();
+  },
+
+  escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  },
+
+  toast(message, isError){
+    const el = document.getElementById('toast');
+    el.textContent = message;
+    el.classList.toggle('error', !!isError);
+    el.classList.add('show');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => el.classList.remove('show'), 3200);
+  },
+
+  setButtonLoading(btn, spinner, label, loading, loadingText){
+    btn.disabled = loading;
+    spinner.classList.toggle('show', loading);
+    label.textContent = loading ? loadingText : "Sign In";
+  }
+};
+
+/* ================================================================
+   API FUNCTIONS
+   All network communication with Google Apps Script lives here.
+   ================================================================ */
+const Api = {
+  /**
+   * Authenticate a user against the LOGIN_API Apps Script endpoint.
+   * Expected response: { success:true, name:"Ahmed", role:"Admin" }
+   */
+  async login(username, password){
+    if(!CONFIG.LOGIN_API){
+      throw new Error("LOGIN_API is not configured. Please set CONFIG.LOGIN_API in the source code.");
+    }
+    // Mirrors the exact working fetch pattern: plain POST, text/plain header,
+    // JSON body, no extra response.ok gate (Apps Script responses are read directly).
+    const response = await fetch(CONFIG.LOGIN_API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ username, password })
+    });
+    return await response.json();
+  },
+
+  /**
+   * Fetch the current inventory list from the STOCK_API Apps Script endpoint.
+   * Expected response: an array of stock item objects.
+   */
+  async getStock(){
+    if(!CONFIG.STOCK_API){
+      throw new Error("STOCK_API is not configured. Please set CONFIG.STOCK_API in the source code.");
+    }
+    const response = await fetch(CONFIG.STOCK_API, { method:"GET" });
+    const data = await response.json();
+    return Array.isArray(data) ? data : (data.data || []);
+  }
+};
+
+/* ================================================================
+   AUTHENTICATION
+   Handles the login form submission and session lifecycle.
+   ================================================================ */
+const Auth = {
+  init(){
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      Auth.handleLogin();
+    });
+  },
+
+  async handleLogin(){
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const errorBox = document.getElementById('login-error');
+    const errorText = document.getElementById('login-error-text');
+    const btn = document.getElementById('signin-btn');
+    const spinner = document.getElementById('signin-spinner');
+    const label = document.getElementById('signin-label');
+
+    errorBox.classList.remove('show');
+
+    if(!username || !password){
+      errorText.textContent = "Please enter both username and password.";
+      errorBox.classList.add('show');
+      return;
+    }
+
+    Utils.setButtonLoading(btn, spinner, label, true, "Signing in…");
+
+    try{
+      const result = await Api.login(username, password);
+
+      if(result && result.success){
+        AppState.currentUser = { name: result.name || "User", role: result.role || "Staff" };
+        Sidebar.applyUserInfo();
+        Auth.enterApp();
+      } else {
+        errorText.textContent = "Invalid Username or Password";
+        errorBox.classList.add('show');
+      }
+    } catch(err){
+      console.error("Login error:", err);
+      errorText.textContent = err.message || "Unable to reach the login service. Please try again.";
+      errorBox.classList.add('show');
+    } finally {
+      Utils.setButtonLoading(btn, spinner, label, false, "Sign In");
+    }
+  },
+
+  enterApp(){
+    document.getElementById('login-screen').style.display = "none";
+    document.getElementById('app-shell').classList.add('active');
+    Home.render();
+    Router.goTo('home');
+  },
+
+  logout(){
+    AppState.currentUser = null;
+    AppState.stockData = [];
+    AppState.filteredStock = [];
+    AppState.isStockLoaded = false;
+
+    document.getElementById('app-shell').classList.remove('active');
+    document.getElementById('login-screen').style.display = "flex";
+    document.getElementById('login-form').reset();
+    document.getElementById('login-error').classList.remove('show');
+    Router.goTo('home'); // reset internal page state for next session
+  }
+};
+
+/* ================================================================
+   SIDEBAR FUNCTIONS
+   Navigation + user info rendering in the sidebar.
+   ================================================================ */
+const Sidebar = {
+  init(){
+    document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+      item.addEventListener('click', () => Router.goTo(item.dataset.page));
+    });
+    document.getElementById('logout-btn').addEventListener('click', Auth.logout);
+  },
+
+  applyUserInfo(){
+    const user = AppState.currentUser;
+    if(!user) return;
+    document.getElementById('sidebar-username').textContent = user.name;
+    document.getElementById('sidebar-role').textContent = user.role;
+    document.getElementById('sidebar-avatar').textContent = Utils.initials(user.name);
+  },
+
+  setActive(pageId){
+    document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+      item.classList.toggle('active', item.dataset.page === pageId);
+    });
+  }
+};
+
+/* ================================================================
+   ROUTER
+   Simple page-switching logic, structured to support more
+   pages (Transactions, Reports, Dashboard) without rework.
+   ================================================================ */
+const Router = {
+  pages: {
+    home: { title:"Home", subtitle:"Overview of your workspace", onEnter: () => Home.render() },
+    stock: { title:"Stock", subtitle:"Live inventory from Google Sheets", onEnter: () => Stock.onEnter() }
+  },
+  current: null,
+
+  goTo(pageId){
+    const def = this.pages[pageId];
+    if(!def) return;
+
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + pageId);
+    if(target) target.classList.add('active');
+
+    document.getElementById('topbar-title').childNodes[0].textContent = def.title + " ";
+    document.getElementById('topbar-subtitle').textContent = def.subtitle;
+    document.getElementById('topbar-date').textContent = Utils.todayFormatted();
+
+    Sidebar.setActive(pageId);
+    this.current = pageId;
+
+    if(typeof def.onEnter === "function") def.onEnter();
+  }
+};
+
+/* ================================================================
+   HOME PAGE RENDERING
+   ================================================================ */
+const Home = {
+  render(){
+    const user = AppState.currentUser;
+    if(!user) return;
+
+    document.getElementById('home-username').textContent = user.name;
+    document.getElementById('home-role-line').textContent = "Role: " + user.role;
+    document.getElementById('stat-user').textContent = user.name;
+    document.getElementById('stat-role').textContent = user.role;
+    document.getElementById('stat-date').textContent = Utils.todayFormatted();
+    document.getElementById('info-user').textContent = user.name;
+    document.getElementById('info-role').textContent = user.role;
+  }
+};
+
+/* ================================================================
+   STOCK FUNCTIONS
+   Loading, rendering and status-coloring of inventory data.
+   ================================================================ */
+const Stock = {
+  async onEnter(){
+    // Load once per session; user can manually refresh afterward.
+    if(!AppState.isStockLoaded){
+      await this.load();
+    }
+  },
+
+  async load(){
+    const loadingEl = document.getElementById('stock-loading');
+    const emptyEl = document.getElementById('stock-empty');
+    const tbody = document.getElementById('stock-tbody');
+
+    tbody.innerHTML = "";
+    emptyEl.style.display = "none";
+    loadingEl.style.display = "flex";
+
+    try{
+      const data = await Api.getStock();
+      AppState.stockData = data;
+      AppState.filteredStock = data;
+      AppState.isStockLoaded = true;
+      this.renderTable(data);
+    } catch(err){
+      console.error("Stock load error:", err);
+      loadingEl.style.display = "none";
+      emptyEl.style.display = "flex";
+      document.querySelector('#stock-empty h4').textContent = "Couldn't load inventory";
+      document.querySelector('#stock-empty p').textContent = err.message || "Please check the STOCK_API configuration and try again.";
+      Utils.toast(err.message || "Failed to load stock data", true);
+    } finally {
+      loadingEl.style.display = "none";
+    }
+  },
+
+  async refresh(){
+    const btn = document.getElementById('refresh-stock-btn');
+    btn.classList.add('spinning');
+    try{
+      await this.load();
+      Utils.toast("Inventory refreshed successfully");
+    } finally {
+      btn.classList.remove('spinning');
+    }
+  },
+
+  renderTable(items){
+    const tbody = document.getElementById('stock-tbody');
+    const emptyEl = document.getElementById('stock-empty');
+    const countLabel = document.getElementById('stock-count-label');
+    const footerLeft = document.getElementById('table-footer-left');
+
+    tbody.innerHTML = "";
+
+    if(!items || items.length === 0){
+      emptyEl.style.display = "flex";
+      document.querySelector('#stock-empty h4').textContent = "No matching items";
+      document.querySelector('#stock-empty p').textContent = "Try a different search term, or refresh the inventory list.";
+      countLabel.textContent = "0 items";
+      footerLeft.textContent = "0 of " + AppState.stockData.length + " items shown";
+      return;
+    }
+
+    emptyEl.style.display = "none";
+
+    const rows = items.map(item => {
+      const inStock = Number(item["In Stock"]) || 0;
+      const minStock = Number(item["Minimum Stock"]) || 0;
+      const isLow = inStock < minStock;
+      const statusClass = isLow ? "low" : "ok";
+
+      return `
+        <tr>
+          <td><span class="code-pill">${Utils.escapeHtml(item["Code"])}</span></td>
+          <td>${Utils.escapeHtml(item["Part Name"])}</td>
+          <td>${Utils.escapeHtml(item["Category"])}</td>
+          <td>${Utils.escapeHtml(item["Storage Location"])}</td>
+          <td><span class="status-dot ${statusClass}"></span><span class="stock-value ${statusClass}">${Utils.escapeHtml(item["In Stock"])}</span></td>
+          <td>${Utils.escapeHtml(item["Minimum Stock"])}</td>
+          <td>${Utils.escapeHtml(item["Unit"])}</td>
+          <td class="notes-cell" title="${Utils.escapeHtml(item["Notes"])}">${Utils.escapeHtml(item["Notes"]) || "—"}</td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.innerHTML = rows;
+    countLabel.textContent = items.length + (items.length === 1 ? " item" : " items");
+    footerLeft.textContent = items.length + " of " + AppState.stockData.length + " items shown";
+  }
+};
+
+/* ================================================================
+   SEARCH FUNCTIONS
+   Instant client-side filtering across the key stock fields.
+   ================================================================ */
+const Search = {
+  init(){
+    const input = document.getElementById('stock-search');
+    input.addEventListener('input', () => this.apply(input.value));
+  },
+
+  apply(query){
+    const q = query.trim().toLowerCase();
+
+    if(!q){
+      AppState.filteredStock = AppState.stockData;
+    } else {
+      AppState.filteredStock = AppState.stockData.filter(item => {
+        return (
+          String(item["Code"] || "").toLowerCase().includes(q) ||
+          String(item["Part Name"] || "").toLowerCase().includes(q) ||
+          String(item["Category"] || "").toLowerCase().includes(q) ||
+          String(item["Storage Location"] || "").toLowerCase().includes(q)
+        );
+      });
+    }
+
+    Stock.renderTable(AppState.filteredStock);
+  }
+};
+
+/* ================================================================
+   BOOTSTRAP
+   Wire up all modules once the DOM is ready.
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('year-note').textContent = new Date().getFullYear();
+
+  Auth.init();
+  Sidebar.init();
+  Search.init();
+
+  document.getElementById('refresh-stock-btn').addEventListener('click', () => Stock.refresh());
 });
-
-alert("Product Uploaded Successfully!");
-
-form.reset();
-preview.style.display="none";
-
-form.style.display="none";
-dashboard.style.display="grid";
-
-});
-
-async function loadOrders(){
-
-const res=await fetch(APIs.orders);
-const data=await res.json();
-
-const table=document.getElementById("ordersTable");
-
-table.innerHTML="";
-
-data.forEach(o=>{
-
-table.innerHTML+=`
-<tr>
-<td>${o.date}</td>
-<td>${o.product}</td>
-<td>${o.price}</td>
-<td>${o.qty}</td>
-<td>${o.total}</td>
-<td>${o.customer}</td>
-<td>${o.phone}</td>
-<td>${o.address}</td>
-</tr>
-`;
-
-});
-
-}
-
 </script>
-
 </body>
 </html>
