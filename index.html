@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marwa Mousa Admin</title>
+
+<style>
+
+body{
+font-family:"Georgia",serif;
+background:#efe6d6;
+margin:0;
+padding:20px;
+text-align:center;
+overflow-x:hidden;
+}
+
+h1{
+color:#5a4632;
+letter-spacing:3px;
+margin-bottom:35px;
+font-weight:400;
+font-size:26px;
+}
+
+#loginBox{
+max-width:400px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 10px 20px rgba(0,0,0,0.08);
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.grid{
+display:none;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:15px;
+max-width:900px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:22px 12px;
+border-radius:12px;
+color:#4a3b2a;
+font-size:15px;
+letter-spacing:1px;
+text-transform:uppercase;
+cursor:pointer;
+border:1px solid rgba(0,0,0,0.05);
+transition:.25s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+background:#f6f1e8;
+}
+
+form{
+margin-top:25px;
+display:flex;
+flex-direction:column;
+gap:14px;
+max-width:420px;
+margin-left:auto;
+margin-right:auto;
+background:white;
+padding:22px;
+border-radius:14px;
+display:none;
+}
+
+input,textarea{
+padding:14px;
+border:none;
+border-bottom:1px solid #bca98b;
+background:transparent;
+font-size:16px;
+outline:none;
+width:100%;
+}
+
+button{
+padding:14px;
+background:#7b6248;
+border:none;
+color:white;
+font-size:15px;
+cursor:pointer;
+border-radius:10px;
+}
+
+button:hover{
+background:#5a4632;
+}
+
+.preview{
+margin-top:10px;
+max-width:120px;
+border-radius:10px;
+display:none;
+margin:auto;
+}
+
+.logoutBtn{
+margin-bottom:20px;
+background:#a33;
+}
+
+table{
+background:white;
+margin:auto;
+border-collapse:collapse;
+width:90%;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>MARWA MOUSA ADMIN</h1>
+
+<!-- LOGIN -->
+
+<div id="loginBox">
+
+<h2>Admin Login</h2>
+
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()" id="loginBtn">Login</button>
+
+<p id="loading" style="display:none;color:#7b6248;">Loading...</p>
+
+</div>
+
+<button class="logoutBtn" onclick="logout()" style="display:none" id="logoutBtn">Logout</button>
+
+<div class="grid" id="dashboard">
+
+<div class="card" data-category="rings">Rings</div>
+<div class="card" data-category="earrings">Earrings</div>
+<div class="card" data-category="necklaces">Necklaces</div>
+<div class="card" data-category="bracelets">Bracelets</div>
+<div class="card" data-category="bags">Bags</div>
+<div class="card" data-category="leathers">Leathers</div>
+<div class="card" data-category="bestsellers">Best Sellers</div>
+<div class="card" data-category="beads">Beads</div>
+<div class="card" data-category="orders">Orders</div>
+
+</div>
+
+<form id="productForm">
+
+<h2>Add Product (<span id="categoryName"></span>)</h2>
+
+<input type="text" id="name" placeholder="Product Name" required>
+<input type="number" id="price" placeholder="Price" required>
+<textarea id="desc" placeholder="Description"></textarea>
+<input type="text" id="image" placeholder="Image URL" required>
+
+<img id="preview" class="preview">
+
+<button type="submit">Add Product</button> <button type="button" onclick="goBack()">Back</button>
+
+</form>
+
+<!-- ORDERS PAGE -->
+
+<div id="ordersPage" style="display:none">
+
+<h2>Orders</h2>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Product</th>
+<th>Price</th>
+<th>Qty</th>
+<th>Total</th>
+<th>Customer</th>
+<th>Phone</th>
+<th>Address</th>
+</tr>
+</thead>
+
+<tbody id="ordersTable"></tbody>
+
+</table>
+
+<br>
+
+<button onclick="goBack()">Back</button>
+
+</div>
+
+<script>
+
+const LOGIN_API="https://script.google.com/macros/s/AKfycbxCipIQScBf2ALvlANhRDQ3P1f3wvGwsZu48Hy5dZ-CvV0h6RG-vVIj2gKA3shf9FlG/exec";
+
+const APIs={
+rings:"https://script.google.com/macros/s/AKfycbyTEQPUUpI2QEqOll3nfn_m6OhBGU6ZZC2jGm_dkUBOvlHnCTS-4DW1l9t1ZGwt2J6E/exec",
+earrings:"https://script.google.com/macros/s/AKfycbyYKkbUolvQ4XAa9JypZVkkfqxZZsxdKcgZGHJAyNVDouEQ3C6Dul9YSecm8K4_wAqu/exec",
+necklaces:"https://script.google.com/macros/s/AKfycbzV5ulAIrv3rVZy7ZlvJV-m3fFcbZH4p_xnbNb443iYxKKnLO7jktm_ZWm1wXhzRzO3/exec",
+bracelets:"https://script.google.com/macros/s/AKfycbwlkhVCMVH4knCGrj7Cwkj8gCXMbD21zXTstIuntgUdnwxy-uNSVG0HUOQ6o3MdsKSLGw/exec",
+bags:"https://script.google.com/macros/s/AKfycbzearJTBoLvGtdiX8g9bCMr4cJi286kRKZ9H-q1fCCaxvjGcuw7bve5bKtjDXwMarUUkw/exec",
+leathers:"https://script.google.com/macros/s/AKfycbz8g00g6t7ZtrLHC_b4PSbSS1v8hzLac-no6ScPDt8J2QrZEIPXAeqqo2VPAijAH8_J/exec",
+bestsellers:"https://script.google.com/macros/s/AKfycbx8tKoTEs2TsjHge4Qqjj8ALjPnvMKDqqGABFubVcOSXVmlx34nbZ9flRosW20jG0W3/exec",
+beads:"https://script.google.com/macros/s/AKfycbydWz_6EAx3_sTndrvQgEP9CjOoVUzvRDI3vaqFOcGD2UKKDz3_o985zPhEF9wSH1GkTA/exec",
+orders:"https://script.google.com/macros/s/AKfycbxq5NVzDbBiy16c_u8NMNP4p1Ot9V_8YhtMB8G34TXUJxsLgcB-TZ6ca2B9PKVfdWU/exec"
+};
+
+const dashboard=document.getElementById("dashboard");
+const form=document.getElementById("productForm");
+const ordersPage=document.getElementById("ordersPage");
+const categoryName=document.getElementById("categoryName");
+const loginBox=document.getElementById("loginBox");
+const logoutBtn=document.getElementById("logoutBtn");
+
+let currentCategory="";
+
+if(localStorage.getItem("adminLogin")==="true"){
+loginBox.style.display="none";
+dashboard.style.display="grid";
+logoutBtn.style.display="block";
+}
+
+async function login(){
+
+const email=document.getElementById("email").value;
+const password=document.getElementById("password").value;
+
+document.getElementById("loading").style.display="block";
+
+const res=await fetch(LOGIN_API,{
+method:"POST",
+headers:{ "Content-Type":"text/plain;charset=utf-8"},
+body:JSON.stringify({email,password})
+});
+
+const data=await res.json();
+
+document.getElementById("loading").style.display="none";
+
+if(data.status==="success"){
+
+localStorage.setItem("adminLogin","true");
+
+loginBox.style.display="none";
+dashboard.style.display="grid";
+logoutBtn.style.display="block";
+
+}else{
+
+alert("Wrong Email or Password");
+
+}
+
+}
+
+function logout(){
+localStorage.removeItem("adminLogin");
+location.reload();
+}
+
+dashboard.addEventListener("click",(e)=>{
+
+const card=e.target.closest(".card");
+if(!card) return;
+
+currentCategory=card.dataset.category;
+
+if(currentCategory==="orders"){
+dashboard.style.display="none";
+ordersPage.style.display="block";
+loadOrders();
+return;
+}
+
+categoryName.textContent=currentCategory;
+
+form.style.display="flex";
+dashboard.style.display="none";
+
+});
+
+function goBack(){
+form.style.display="none";
+ordersPage.style.display="none";
+dashboard.style.display="grid";
+}
+
+document.getElementById("image").addEventListener("input",function(){
+
+const preview=document.getElementById("preview");
+preview.src=this.value;
+preview.style.display="block";
+
+});
+
+form.addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+const data={
+    name: document.getElementById("name").value,
+    price: document.getElementById("price").value,
+    desc: document.getElementById("desc").value,
+    image: document.getElementById("image").value
+};
+
+await fetch(APIs[currentCategory],{
+method:"POST",
+body:JSON.stringify(data)
+});
+
+alert("Product Uploaded Successfully!");
+
+form.reset();
+preview.style.display="none";
+
+form.style.display="none";
+dashboard.style.display="grid";
+
+});
+
+async function loadOrders(){
+
+const res=await fetch(APIs.orders);
+const data=await res.json();
+
+const table=document.getElementById("ordersTable");
+
+table.innerHTML="";
+
+data.forEach(o=>{
+
+table.innerHTML+=`
+<tr>
+<td>${o.date}</td>
+<td>${o.product}</td>
+<td>${o.price}</td>
+<td>${o.qty}</td>
+<td>${o.total}</td>
+<td>${o.customer}</td>
+<td>${o.phone}</td>
+<td>${o.address}</td>
+</tr>
+`;
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
