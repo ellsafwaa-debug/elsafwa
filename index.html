@@ -575,7 +575,253 @@
     font-size:12.5px; color:var(--text-muted);
   }
 
+  /* ---------- ATTENDANCE PAGE ---------- */
+  .attendance-hero{
+    background:linear-gradient(135deg, var(--sidebar-bg) 0%, #1e2942 100%);
+    border-radius:var(--radius-lg);
+    padding:32px 36px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    margin-bottom:24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .attendance-hero::before{
+    content:"";
+    position:absolute; top:-60px; right:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle, rgba(18,165,148,0.30), transparent 70%);
+  }
+  .attendance-clock-block{ position:relative; z-index:1; }
+  .attendance-clock-block .eyebrow{
+    font-size:12.5px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--accent); font-weight:700; margin-bottom:10px;
+  }
+  .attendance-clock{
+    font-family:var(--font-display);
+    font-size:42px; font-weight:800;
+    letter-spacing:0.5px;
+    line-height:1;
+    margin-bottom:8px;
+  }
+  .attendance-date{
+    font-size:14px; color:var(--sidebar-text); margin-bottom:14px;
+  }
+  .status-badge{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:7px 14px;
+    border-radius:20px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.02em;
+  }
+  .status-badge .dot{ width:7px; height:7px; border-radius:50%; }
+  .status-badge.not-marked{ background:rgba(255,255,255,0.10); color:var(--sidebar-text); }
+  .status-badge.not-marked .dot{ background:var(--text-muted); }
+  .status-badge.present{ background:var(--success-soft); color:#5fe3d3; }
+  .status-badge.present .dot{ background:var(--success); }
+  .status-badge.checked-out{ background:rgba(90,120,255,0.16); color:#8ea3ff; }
+  .status-badge.checked-out .dot{ background:#5a78ff; }
+  .status-badge.absent{ background:var(--danger-soft); color:#ff9b9e; }
+  .status-badge.absent .dot{ background:var(--danger); }
+
+  .attendance-actions{
+    position:relative; z-index:1;
+    display:flex; gap:12px; flex-wrap:wrap;
+  }
+  .btn-attendance{
+    display:flex; align-items:center; gap:9px;
+    padding:14px 26px;
+    border:none;
+    border-radius:var(--radius-sm);
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:var(--transition);
+    color:#fff;
+  }
+  .btn-attendance:disabled{ opacity:0.35; cursor:not-allowed; }
+  .btn-checkin{ background:var(--accent); }
+  .btn-checkin:hover:not(:disabled){ background:var(--accent-dark); transform:translateY(-1px); box-shadow:var(--shadow-md); }
+  .btn-checkout{ background:var(--danger); }
+  .btn-checkout:hover:not(:disabled){ background:#c93b40; transform:translateY(-1px); box-shadow:var(--shadow-md); }
+
+  .attendance-toolbar{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    margin-bottom:18px;
+    flex-wrap:wrap;
+  }
+  .month-select-wrap{
+    display:flex; align-items:center; gap:10px;
+  }
+  .month-select-wrap label{
+    font-size:13px; font-weight:600; color:var(--text-secondary);
+  }
+  .month-select{
+    padding:11px 16px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:var(--surface);
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text-primary);
+    outline:none;
+    cursor:pointer;
+    transition:var(--transition);
+    min-width:180px;
+  }
+  .month-select:focus{ border-color:var(--accent); box-shadow:0 0 0 4px var(--accent-soft); }
+
+  .attendance-stat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:18px;
+    margin-bottom:22px;
+  }
+
+  .status-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 11px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+  }
+  .status-pill.present{ background:var(--success-soft); color:var(--success); }
+  .status-pill.absent{ background:var(--danger-soft); color:var(--danger); }
+  .status-pill.weekend{ background:#eef0f4; color:var(--text-muted); }
+  .status-pill.leave{ background:rgba(240,160,32,0.14); color:var(--warning); }
+  .status-pill.pending{ background:rgba(90,120,255,0.12); color:#5a78ff; }
+
   /* ---------- Responsive ---------- */
+  /* ---------- TRANSACTIONS PAGE ---------- */
+  .btn-new-tx{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 18px;
+    background:var(--accent);
+    border:none;
+    border-radius:var(--radius-sm);
+    font-size:13.5px; font-weight:700; color:#fff;
+    cursor:pointer;
+    transition:var(--transition);
+  }
+  .btn-new-tx:hover{ background:var(--accent-dark); transform:translateY(-1px); box-shadow:var(--shadow-md); }
+  .tx-type-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px; font-weight:700;
+  }
+  .tx-type-pill.in{ background:var(--success-soft); color:var(--success); }
+  .tx-type-pill.out{ background:var(--danger-soft); color:var(--danger); }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(16,20,30,0.55);
+    align-items:center; justify-content:center;
+    z-index:100;
+    padding:20px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal-box{
+    background:var(--surface);
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-lg);
+    width:100%; max-width:460px;
+    max-height:90vh;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .modal-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
+  }
+  .modal-header h3{
+    margin:0; font-family:var(--font-display); font-size:18px; font-weight:800; color:var(--text-primary);
+  }
+  .modal-close{
+    background:none; border:none; cursor:pointer;
+    font-size:22px; line-height:1; color:var(--text-muted);
+    padding:4px; border-radius:6px; transition:var(--transition);
+  }
+  .modal-close:hover{ background:var(--bg); color:var(--text-primary); }
+  .modal-body{
+    padding:24px; overflow-y:auto;
+  }
+  .modal-body .field-group select{
+    width:100%;
+    padding:13px 14px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    font-size:14.5px;
+    background:#fafbfc;
+    color:var(--text-primary);
+    transition:var(--transition);
+    outline:none;
+    appearance:none;
+    -webkit-appearance:none;
+  }
+  .modal-body .field-group select:focus{
+    border-color:var(--accent); background:#fff; box-shadow:0 0 0 4px var(--accent-soft);
+  }
+  .tx-type-toggle{
+    display:flex; gap:10px;
+  }
+  .tx-type-btn{
+    flex:1;
+    padding:12px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:#fafbfc;
+    font-size:14px; font-weight:700; color:var(--text-secondary);
+    cursor:pointer;
+    transition:var(--transition);
+  }
+  .tx-type-btn[data-type="IN"].active{ border-color:var(--success); background:var(--success-soft); color:var(--success); }
+  .tx-type-btn[data-type="OUT"].active{ border-color:var(--danger); background:var(--danger-soft); color:var(--danger); }
+  .tx-current-stock{
+    font-size:13px; color:var(--text-secondary);
+    background:var(--bg);
+    border-radius:var(--radius-sm);
+    padding:10px 14px;
+    margin-bottom:6px;
+  }
+  .tx-current-stock b{ color:var(--text-primary); }
+  .modal-error{
+    display:none;
+    align-items:center; gap:8px;
+    background:var(--danger-soft);
+    color:var(--danger);
+    padding:12px 14px;
+    border-radius:var(--radius-sm);
+    font-size:13px;
+    margin-top:4px;
+  }
+  .modal-error.show{ display:flex; }
+  .modal-footer{
+    display:flex; gap:12px;
+    padding:18px 24px;
+    border-top:1px solid var(--border);
+  }
+  .btn-cancel{
+    flex:1;
+    padding:13px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:var(--surface);
+    font-size:14.5px; font-weight:700; color:var(--text-secondary);
+    cursor:pointer;
+    transition:var(--transition);
+  }
+  .btn-cancel:hover{ border-color:var(--text-muted); color:var(--text-primary); }
+  .modal-footer .btn-signin{ flex:1.4; margin-top:0; }
+
   @media (max-width: 900px){
     .login-brand-panel{ display:none; }
     .login-form-panel{ width:100%; padding:40px 28px; }
@@ -677,6 +923,18 @@
       </span>
       <span class="nav-label">Stock</span>
     </div>
+    <div class="nav-item" data-page="attendance">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </span>
+      <span class="nav-label">Attendance</span>
+    </div>
+    <div class="nav-item" data-page="transactions">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </span>
+      <span class="nav-label">Transactions</span>
+    </div>
 
     <div class="nav-section-label">Coming Soon</div>
     <div class="nav-item disabled" title="Coming soon">
@@ -684,13 +942,6 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </span>
       <span class="nav-label">Users</span>
-      <span class="nav-badge">SOON</span>
-    </div>
-    <div class="nav-item disabled" title="Coming soon">
-      <span class="nav-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      </span>
-      <span class="nav-label">Transactions</span>
       <span class="nav-badge">SOON</span>
     </div>
     <div class="nav-item disabled" title="Coming soon">
@@ -823,6 +1074,190 @@
       </div>
     </div>
 
+    <!-- ATTENDANCE PAGE -->
+    <div class="page" id="page-attendance">
+
+      <!-- Quick Action Card -->
+      <div class="attendance-hero">
+        <div class="attendance-clock-block">
+          <div class="eyebrow">Today</div>
+          <div class="attendance-clock" id="attendance-live-clock">--:--:--</div>
+          <div class="attendance-date" id="attendance-live-date">—</div>
+          <span class="status-badge not-marked" id="attendance-status-badge">
+            <span class="dot"></span>
+            <span id="attendance-status-text">Not Marked</span>
+          </span>
+        </div>
+        <div class="attendance-actions">
+          <button class="btn-attendance btn-checkin" id="checkin-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Check In
+          </button>
+          <button class="btn-attendance btn-checkout" id="checkout-btn" disabled>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Check Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Month Filter + Toolbar -->
+      <div class="attendance-toolbar">
+        <div class="month-select-wrap">
+          <label for="attendance-month-select">Month</label>
+          <select class="month-select" id="attendance-month-select"></select>
+        </div>
+        <div class="toolbar-meta">
+          <span id="attendance-count-label">0 records</span>
+          <button class="btn-refresh" id="refresh-attendance-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="attendance-stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:var(--accent-soft); color:var(--accent);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="stat-label">Total Attendance Days</div>
+          <div class="stat-value" id="attendance-stat-days">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" style="background:rgba(90,120,255,0.12); color:#5a78ff;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="stat-label">Total Working Hours</div>
+          <div class="stat-value" id="attendance-stat-hours">0h 0m</div>
+        </div>
+      </div>
+
+      <!-- Attendance Log Table -->
+      <div class="table-card">
+        <div class="table-scroll">
+          <table id="attendance-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Check In</th>
+                <th>Check Out</th>
+                <th>Working Hours</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendance-tbody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+          <div class="loading-state" id="attendance-loading" style="display:none;">
+            <span class="spinner show"></span>
+            <h4>Loading attendance…</h4>
+            <p>Fetching the attendance log for the selected month.</p>
+          </div>
+          <div class="empty-state" id="attendance-empty" style="display:none;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <h4>No records found</h4>
+            <p>There is no attendance data for the selected month yet.</p>
+          </div>
+        </div>
+        <div class="table-footer">
+          <span id="attendance-footer-left">—</span>
+          <span id="attendance-footer-right">Synced with Google Sheets</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS PAGE -->
+    <div class="page" id="page-transactions">
+      <div class="stock-toolbar">
+        <div class="toolbar-meta">
+          <span id="tx-count-label">0 transactions this session</span>
+        </div>
+        <button class="btn-new-tx" id="new-tx-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Transaction
+        </button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-scroll">
+          <table id="tx-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Code</th>
+                <th>Part Name</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Note</th>
+                <th>User</th>
+              </tr>
+            </thead>
+            <tbody id="tx-tbody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+          <div class="empty-state" id="tx-empty">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <h4>No transactions yet this session</h4>
+            <p>Click "New Transaction" to record a stock in/out movement — it updates the sheet and the inventory instantly.</p>
+          </div>
+        </div>
+        <div class="table-footer">
+          <span id="tx-footer-left">—</span>
+          <span id="tx-footer-right">Saved to the Transactions sheet</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEW TRANSACTION MODAL -->
+<div class="modal-overlay" id="tx-modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>New Transaction</h3>
+      <button class="modal-close" id="tx-modal-close" type="button">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Item</label>
+        <select id="tx-item-select">
+          <option value="">Select an item…</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>Movement Type</label>
+        <div class="tx-type-toggle">
+          <button type="button" class="tx-type-btn active" data-type="IN">Stock In</button>
+          <button type="button" class="tx-type-btn" data-type="OUT">Stock Out</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Quantity</label>
+        <input type="number" id="tx-qty" min="1" step="1" placeholder="e.g. 10">
+      </div>
+
+      <div class="field-group" style="margin-bottom:8px;">
+        <label>Note / Reference No.</label>
+        <input type="text" id="tx-note" placeholder="e.g. PO-2054 or reason for the movement">
+      </div>
+
+      <div class="tx-current-stock" id="tx-current-stock-hint" style="display:none;"></div>
+      <div class="modal-error" id="tx-modal-error"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="tx-cancel-btn" type="button">Cancel</button>
+      <button class="btn-signin" id="tx-confirm-btn" type="button">
+        <span class="spinner" id="tx-confirm-spinner"></span>
+        <span id="tx-confirm-label">Confirm Transaction</span>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -836,7 +1271,14 @@
    ================================================================ */
 const CONFIG = {
   LOGIN_API: "https://script.google.com/macros/s/AKfycbxPbzAM6hK0G2b9b-lJYkPHFTdhaweZmPTFZJ-yPB1jPd5kwrqXopstixg57lE0DI5D/exec",
-  STOCK_API: "https://script.google.com/macros/s/AKfycbyol0Ov-baoglD2xEDCXL336Bw_loUoEz9ROg_FQ6Pc-N0KdqxWydbOg-WMeMYllUWs/exec"
+  // GET returns the Stock sheet as JSON. POST with {action:"transaction", ...}
+  // is handled by the same Apps Script deployment to log a movement and
+  // update the item's "In Stock" quantity — see the Code.gs provided separately.
+  STOCK_API: "https://script.google.com/macros/s/AKfycbyol0Ov-baoglD2xEDCXL336Bw_loUoEz9ROg_FQ6Pc-N0KdqxWydbOg-WMeMYllUWs/exec",
+  // Paste your Apps Script Web App URL here (same pattern as LOGIN_API / STOCK_API).
+  // It must support GET ?user=NAME (returns that user's attendance history)
+  // and POST {action:"checkin"/"checkout", time, user} (writes to the Attendance sheet).
+  ATTENDANCE_API: "https://script.google.com/macros/s/AKfycbxjU0HpU8MKfEQFdMGQHH4WVZ96y3869hPJHi7KX85GZq9b7AELUwpLiELDgOpWcDN2/exec"
 };
 
 /* ================================================================
@@ -848,7 +1290,14 @@ const AppState = {
   currentUser: null,      // { name, role }
   stockData: [],          // raw data from STOCK_API
   filteredStock: [],      // data currently displayed (post-search)
-  isStockLoaded: false
+  isStockLoaded: false,
+
+  attendanceAll: [],      // full attendance history, one record per date
+  attendanceView: [],     // records currently displayed (post month-filter)
+  isAttendanceLoaded: false,
+  attendanceSelectedMonth: null, // "YYYY-MM"
+
+  transactionsLog: []     // transactions submitted this session (newest first)
 };
 
 /* ================================================================
@@ -890,6 +1339,36 @@ const Utils = {
     btn.disabled = loading;
     spinner.classList.toggle('show', loading);
     label.textContent = loading ? loadingText : "Sign In";
+  },
+
+  /* ---------- Date / time helpers (used by Attendance) ---------- */
+  dateKey(d){
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  },
+
+  padTime(h, m){
+    return String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0');
+  },
+
+  monthLabel(monthKey){
+    const [y, m] = monthKey.split('-').map(Number);
+    const d = new Date(y, m - 1, 1);
+    return d.toLocaleDateString('en-GB', { month:'long', year:'numeric' });
+  },
+
+  minutesBetween(startStr, endStr){
+    const [sh, sm] = startStr.split(':').map(Number);
+    const [eh, em] = endStr.split(':').map(Number);
+    return Math.max(0, (eh * 60 + em) - (sh * 60 + sm));
+  },
+
+  formatDuration(totalMinutes){
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return h + "h " + m + "m";
   }
 };
 
@@ -920,13 +1399,90 @@ const Api = {
    * Fetch the current inventory list from the STOCK_API Apps Script endpoint.
    * Expected response: an array of stock item objects.
    */
-  async getStock(){
+ async getStock() {
+    if (!CONFIG.STOCK_API) {
+      throw new Error("STOCK_API is not configured. Please set CONFIG.STOCK_API in the source code.");
+    }
+
+    const response = await fetch(CONFIG.STOCK_API, { method: "GET" });
+    const data = await response.json();
+    
+    // لو الـ API راجع بالأوبجيكت الجديد، بناخد منه الـ stock، ولو راجع بأراي بناخدها على طول
+    if (data && data.stock && Array.isArray(data.stock)) {
+      return data.stock;
+    }
+    
+    return Array.isArray(data) ? data : (data.data || []);
+  },
+  async getTransactions() {
+    if (!CONFIG.STOCK_API) {
+      throw new Error("STOCK_API is not configured.");
+    }
+
+    const response = await fetch(CONFIG.STOCK_API, { method: "GET" });
+    const data = await response.json();
+    
+    // بيجيب أراي الـ transactions من الـ API
+    if (data && data.transactions && Array.isArray(data.transactions)) {
+      return data.transactions;
+    }
+    
+    return [];
+  },
+
+  /**
+   * Submit a Stock In / Stock Out movement. Sent to the same STOCK_API
+   * Apps Script endpoint (doPost), which updates the item's "In Stock"
+   * quantity in the Stock sheet and appends a row to the Transactions sheet.
+   * Expected response: { success:true, newQuantity } or { success:false, message }.
+   */
+  async submitTransaction({ code, type, quantity, note }){
     if(!CONFIG.STOCK_API){
       throw new Error("STOCK_API is not configured. Please set CONFIG.STOCK_API in the source code.");
     }
-    const response = await fetch(CONFIG.STOCK_API, { method:"GET" });
+    const response = await fetch(CONFIG.STOCK_API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "transaction",
+        code, type, quantity, note,
+        user: AppState.currentUser.name
+      })
+    });
+    const data = await response.json();
+    if(data && data.success === false){
+      throw new Error(data.message || "The transaction was rejected by the server.");
+    }
+    return data;
+  },
+
+  /**
+   * Fetch the full attendance history for the signed-in user from the
+   * ATTENDANCE_API Apps Script endpoint.
+   */
+  async getAttendance(){
+    if(!CONFIG.ATTENDANCE_API){
+      throw new Error("ATTENDANCE_API is not configured. Please set CONFIG.ATTENDANCE_API in the source code.");
+    }
+    const response = await fetch(CONFIG.ATTENDANCE_API + "?user=" + encodeURIComponent(AppState.currentUser.name), { method:"GET" });
     const data = await response.json();
     return Array.isArray(data) ? data : (data.data || []);
+  },
+
+  /**
+   * Record a check-in / check-out event for today via the ATTENDANCE_API
+   * Apps Script endpoint.
+   */
+  async markAttendance(action, timeStr){
+    if(!CONFIG.ATTENDANCE_API){
+      throw new Error("ATTENDANCE_API is not configured. Please set CONFIG.ATTENDANCE_API in the source code.");
+    }
+    const response = await fetch(CONFIG.ATTENDANCE_API, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ action, time: timeStr, user: AppState.currentUser.name })
+    });
+    return await response.json();
   }
 };
 
@@ -993,6 +1549,11 @@ const Auth = {
     AppState.stockData = [];
     AppState.filteredStock = [];
     AppState.isStockLoaded = false;
+    AppState.attendanceAll = [];
+    AppState.attendanceView = [];
+    AppState.isAttendanceLoaded = false;
+    AppState.attendanceSelectedMonth = null;
+    if(Attendance.clockTimer){ clearInterval(Attendance.clockTimer); Attendance.clockTimer = null; }
 
     document.getElementById('app-shell').classList.remove('active');
     document.getElementById('login-screen').style.display = "flex";
@@ -1037,7 +1598,9 @@ const Sidebar = {
 const Router = {
   pages: {
     home: { title:"Home", subtitle:"Overview of your workspace", onEnter: () => Home.render() },
-    stock: { title:"Stock", subtitle:"Live inventory from Google Sheets", onEnter: () => Stock.onEnter() }
+    stock: { title:"Stock", subtitle:"Live inventory from Google Sheets", onEnter: () => Stock.onEnter() },
+    attendance: { title:"Attendance", subtitle:"Check in, check out and review your log", onEnter: () => Attendance.onEnter() },
+    transactions: { title:"Transactions", subtitle:"Record stock in/out movements", onEnter: () => Transactions.onEnter() }
   },
   current: null,
 
@@ -1174,6 +1737,526 @@ const Stock = {
 };
 
 /* ================================================================
+   TRANSACTIONS FUNCTIONS
+   New Transaction modal, POST to STOCK_API, and instant local
+   stock + log updates (no page reload).
+   ================================================================ */
+const Transactions = {
+  selectedType: "IN",
+
+  async onEnter(){
+    // Make sure we have stock items to populate the item dropdown with
+    if(!AppState.isStockLoaded){
+      try { await Stock.load(); } catch(err) { /* Stock.load already surfaces the error */ }
+    }
+    
+    // جلب بيانات الحركات القديمة من الجوجل شيت عند دخول الصفحة
+    await this.load();
+  },
+
+  async load(){
+    const loadingEl = document.getElementById('tx-loading');
+    const emptyEl   = document.getElementById('tx-empty');
+    const tbody     = document.getElementById('tx-tbody');
+
+    if (tbody) tbody.innerHTML = "";
+    if (emptyEl) emptyEl.style.display = "none";
+    if (loadingEl) loadingEl.style.display = "flex";
+
+    try {
+      // جلب الحركات من الـ API
+      const data = await Api.getTransactions();
+      AppState.transactionsLog = data || [];
+      
+      // رسم الجدول
+      this.renderLogTable();
+
+    } catch (err) {
+      console.error("Transactions load error:", err);
+      if (emptyEl) emptyEl.style.display = "flex";
+      if (typeof Utils !== 'undefined' && Utils.toast) {
+        Utils.toast(err.message || "Failed to load transactions history", true);
+      }
+    } finally {
+      if (loadingEl) loadingEl.style.display = "none";
+    }
+  },
+  async openModal(){
+    const select = document.getElementById('tx-item-select');
+    const confirmBtn = document.getElementById('tx-confirm-btn');
+
+    document.getElementById('tx-qty').value = "";
+    document.getElementById('tx-note').value = "";
+    this.setType("IN");
+    this.hideError();
+    document.getElementById('tx-current-stock-hint').style.display = "none";
+    document.getElementById('tx-modal-overlay').classList.add('show');
+
+    // If stock hasn't loaded yet (or is empty), load it now instead of
+    // requiring the user to visit the Stock page first.
+    if(!AppState.isStockLoaded || AppState.stockData.length === 0){
+      select.innerHTML = `<option value="">Loading items…</option>`;
+      confirmBtn.disabled = true;
+      try{
+        await Stock.load();
+      } catch(err){
+        this.showError(err.message || "Failed to load items from Stock.");
+      }
+      confirmBtn.disabled = false;
+    }
+
+    select.innerHTML = this.buildItemOptions();
+    this.updateStockHint();
+  },
+
+  closeModal(){
+    document.getElementById('tx-modal-overlay').classList.remove('show');
+  },
+
+  buildItemOptions(){
+    const items = AppState.stockData || [];
+    if(items.length === 0){
+      return `<option value="">No items available — check Stock configuration</option>`;
+    }
+    const options = items.map(item => {
+      const code = item["Code"];
+      const qty = Number(item["In Stock"]) || 0;
+      return `<option value="${Utils.escapeHtml(code)}">${Utils.escapeHtml(code)} — ${Utils.escapeHtml(item["Part Name"])} (${qty} in stock)</option>`;
+    }).join("");
+    return `<option value="">Select an item…</option>` + options;
+  },
+
+  setType(type){
+    this.selectedType = type;
+    document.querySelectorAll('.tx-type-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.type === type);
+    });
+  },
+
+  updateStockHint(){
+    const code = document.getElementById('tx-item-select').value;
+    const hint = document.getElementById('tx-current-stock-hint');
+    const item = AppState.stockData.find(i => String(i["Code"]) === String(code));
+    if(!item){
+      hint.style.display = "none";
+      return;
+    }
+    hint.style.display = "block";
+    hint.innerHTML = `Current stock: <b>${Utils.escapeHtml(item["In Stock"])} ${Utils.escapeHtml(item["Unit"] || "")}</b>`;
+  },
+
+  showError(message){
+    const el = document.getElementById('tx-modal-error');
+    el.textContent = message;
+    el.classList.add('show');
+  },
+
+  hideError(){
+    const el = document.getElementById('tx-modal-error');
+    el.textContent = "";
+    el.classList.remove('show');
+  },
+
+  async submit(){
+    const code = document.getElementById('tx-item-select').value;
+    const qtyRaw = document.getElementById('tx-qty').value;
+    const note = document.getElementById('tx-note').value.trim();
+    const quantity = Number(qtyRaw);
+
+    this.hideError();
+
+    if(!code){
+      this.showError("Please select an item.");
+      return;
+    }
+    if(!qtyRaw || !Number.isFinite(quantity) || quantity <= 0){
+      this.showError("Please enter a valid quantity greater than 0.");
+      return;
+    }
+
+    const item = AppState.stockData.find(i => String(i["Code"]) === String(code));
+    const currentQty = item ? (Number(item["In Stock"]) || 0) : 0;
+    if(this.selectedType === "OUT" && quantity > currentQty){
+      this.showError(`Not enough stock: only ${currentQty} available.`);
+      return;
+    }
+
+    const btn = document.getElementById('tx-confirm-btn');
+    const spinner = document.getElementById('tx-confirm-spinner');
+    const label = document.getElementById('tx-confirm-label');
+    btn.disabled = true;
+    spinner.classList.add('show');
+    label.textContent = "Submitting…";
+
+    try{
+      const result = await Api.submitTransaction({ code, type: this.selectedType, quantity, note });
+
+      // Update local stock immediately so the Stock page reflects the change
+      // without a reload. Prefer the server's authoritative new quantity if given.
+      const newQty = (result && result.newQuantity !== undefined)
+        ? Number(result.newQuantity)
+        : currentQty + (this.selectedType === "IN" ? quantity : -quantity);
+
+      if(item) item["In Stock"] = newQty;
+      if(AppState.isStockLoaded) Stock.renderTable(AppState.filteredStock.length ? AppState.filteredStock : AppState.stockData);
+
+      AppState.transactionsLog.unshift({
+        time: new Date().toLocaleString('en-GB', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }),
+        code,
+        partName: item ? item["Part Name"] : "",
+        type: this.selectedType,
+        quantity,
+        note,
+        user: AppState.currentUser.name
+      });
+      this.renderLogTable();
+
+      Utils.toast(`${this.selectedType === "IN" ? "Stock in" : "Stock out"} recorded for ${code}`);
+      this.closeModal();
+    } catch(err){
+      console.error("Transaction error:", err);
+      this.showError(err.message || "Failed to submit the transaction. Please try again.");
+    } finally {
+      btn.disabled = false;
+      spinner.classList.remove('show');
+      label.textContent = "Confirm Transaction";
+    }
+  },
+
+  renderLogTable(){
+    const tbody = document.getElementById('tx-tbody');
+    const emptyEl = document.getElementById('tx-empty');
+    const countLabel = document.getElementById('tx-count-label');
+    const footerLeft = document.getElementById('tx-footer-left');
+    const log = AppState.transactionsLog;
+
+    if(log.length === 0){
+      tbody.innerHTML = "";
+      emptyEl.style.display = "flex";
+      countLabel.textContent = "0 transactions this session";
+      footerLeft.textContent = "—";
+      return;
+    }
+
+    emptyEl.style.display = "none";
+   tbody.innerHTML = log.map(tx => {
+      // 1. جلب الكود والوقت
+      const code = tx.Code || tx.code || "";
+      const rawTime = tx.Date || tx.time || "";
+      const formattedTime = rawTime ? new Date(rawTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : "-";
+
+      // 2. البحث عن اسم القطعة من الـ Stock بناءً على الكود
+      const item = AppState.stockData.find(s => String(s.Code || s.code).trim() === String(code).trim());
+      const partName = item ? (item["Part Name"] || item.partName || "-") : "-";
+
+      // 3. باقي البيانات
+      const type = (tx.Type || tx.type || "").toUpperCase();
+      const quantity = tx.Quantity || tx.quantity || 0;
+      const note = tx.Note || tx.note || "-";
+      const user = tx.User || tx.user || "-";
+
+      return `
+        <tr>
+          <td>${Utils.escapeHtml(formattedTime)}</td>
+          <td><span class="code-pill">${Utils.escapeHtml(code)}</span></td>
+          <td>${Utils.escapeHtml(partName)}</td>
+          <td><span class="tx-type-pill ${type === 'IN' ? 'in' : 'out'}">${type === 'IN' ? 'Stock In' : 'Stock Out'}</span></td>
+          <td>${Utils.escapeHtml(String(quantity))}</td>
+          <td class="notes-cell" title="${Utils.escapeHtml(note)}">${Utils.escapeHtml(note)}</td>
+          <td>${Utils.escapeHtml(user)}</td>
+        </tr>
+      `;
+    }).join("");
+
+    countLabel.textContent = log.length + (log.length === 1 ? " transaction this session" : " transactions this session");
+    footerLeft.textContent = log.length + " logged this session";
+  },
+
+  init(){
+    document.getElementById('new-tx-btn').addEventListener('click', () => this.openModal());
+    document.getElementById('tx-modal-close').addEventListener('click', () => this.closeModal());
+    document.getElementById('tx-cancel-btn').addEventListener('click', () => this.closeModal());
+    document.getElementById('tx-modal-overlay').addEventListener('click', (e) => {
+      if(e.target.id === 'tx-modal-overlay') this.closeModal();
+    });
+    document.querySelectorAll('.tx-type-btn').forEach(b => {
+      b.addEventListener('click', () => this.setType(b.dataset.type));
+    });
+    document.getElementById('tx-item-select').addEventListener('change', () => this.updateStockHint());
+    document.getElementById('tx-confirm-btn').addEventListener('click', () => this.submit());
+  }
+};
+
+/* ================================================================
+   ATTENDANCE FUNCTIONS
+   Live clock, check in/out, month filtering and log rendering.
+   ================================================================ */
+const Attendance = {
+  clockTimer: null,
+  todayKey: null,
+
+  async onEnter(){
+    this.startClock();
+    if(!AppState.isAttendanceLoaded){
+      await this.load();
+    } else {
+      this.refreshTodayCard();
+      this.applyMonthFilter(AppState.attendanceSelectedMonth);
+    }
+  },
+
+  /* ---------- Live clock ---------- */
+  startClock(){
+    if(this.clockTimer) return;
+    this.tickClock();
+    this.clockTimer = setInterval(() => this.tickClock(), 1000);
+  },
+
+  tickClock(){
+    const now = new Date();
+    const clockEl = document.getElementById('attendance-live-clock');
+    const dateEl = document.getElementById('attendance-live-date');
+    if(!clockEl || !dateEl) return;
+    clockEl.textContent = now.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+    dateEl.textContent = now.toLocaleDateString('en-GB', { weekday:'long', day:'2-digit', month:'long', year:'numeric' });
+  },
+
+  /* ---------- Data loading ---------- */
+  async load(){
+    const loadingEl = document.getElementById('attendance-loading');
+    const emptyEl = document.getElementById('attendance-empty');
+    const tbody = document.getElementById('attendance-tbody');
+
+    tbody.innerHTML = "";
+    emptyEl.style.display = "none";
+    loadingEl.style.display = "flex";
+
+    try{
+      const data = await Api.getAttendance();
+      AppState.attendanceAll = data.sort((a,b) => a.date < b.date ? 1 : -1);
+      AppState.isAttendanceLoaded = true;
+      this.populateMonthSelect();
+      this.refreshTodayCard();
+      this.applyMonthFilter(AppState.attendanceSelectedMonth);
+    } catch(err){
+      console.error("Attendance load error:", err);
+      document.querySelector('#attendance-empty h4').textContent = "Couldn't load attendance";
+      document.querySelector('#attendance-empty p').textContent = err.message || "Please check the ATTENDANCE_API configuration and try again.";
+      emptyEl.style.display = "flex";
+      Utils.toast(err.message || "Failed to load attendance data", true);
+    } finally {
+      loadingEl.style.display = "none";
+    }
+  },
+
+  async refresh(){
+    const btn = document.getElementById('refresh-attendance-btn');
+    btn.classList.add('spinning');
+    try{
+      AppState.isAttendanceLoaded = false;
+      await this.load();
+      Utils.toast("Attendance refreshed successfully");
+    } finally {
+      btn.classList.remove('spinning');
+    }
+  },
+
+  /* ---------- Today card / check in-out ---------- */
+  getTodayRecord(){
+    const key = Utils.dateKey(new Date());
+    return AppState.attendanceAll.find(r => r.date === key);
+  },
+
+  refreshTodayCard(){
+    const record = this.getTodayRecord();
+    const badge = document.getElementById('attendance-status-badge');
+    const statusText = document.getElementById('attendance-status-text');
+    const checkinBtn = document.getElementById('checkin-btn');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    badge.classList.remove('not-marked', 'present', 'checked-out', 'absent');
+
+    if(!record || (!record.checkIn && !record.checkOut && record.status !== "Weekend")){
+      badge.classList.add('not-marked');
+      statusText.textContent = "Not Marked";
+      checkinBtn.disabled = false;
+      checkoutBtn.disabled = true;
+    } else if(record.status === "Weekend"){
+      badge.classList.add('not-marked');
+      statusText.textContent = "Weekend";
+      checkinBtn.disabled = true;
+      checkoutBtn.disabled = true;
+    } else if (record.checkIn && (!record.checkOut || record.checkOut === '--')) {
+      badge.classList.add('present');
+      statusText.textContent = "Checked In";
+      checkinBtn.disabled = true;
+      checkoutBtn.disabled = false;
+    } else if(record.checkIn && record.checkOut){
+      badge.classList.add('checked-out');
+      statusText.textContent = "Checked Out";
+      checkinBtn.disabled = true;
+      checkoutBtn.disabled = true;
+    }
+  },
+
+  async checkIn(){
+    const btn = document.getElementById('checkin-btn');
+    btn.disabled = true;
+    try{
+      const now = new Date();
+      const timeStr = Utils.padTime(now.getHours(), now.getMinutes());
+      await Api.markAttendance("checkin", timeStr);
+
+      // ⚡ إعادة جلب البيانات الحديثة من السيرفر وإعادة رسم الواجهة بالكامل
+      if (typeof this.refresh === 'function') {
+        await this.refresh();
+      } else {
+        await AppState.load();
+        this.refreshTodayCard();
+        this.applyMonthFilter(AppState.attendanceSelectedMonth);
+      }
+
+      Utils.toast("Checked in at " + timeStr);
+    } catch(err){
+      console.error("Check-in error:", err);
+      Utils.toast(err.message || "Failed to check in", true);
+      btn.disabled = false;
+    }
+  },
+
+  async checkOut(){
+    const btn = document.getElementById('checkout-btn');
+    btn.disabled = true;
+    try{
+      const now = new Date();
+      const timeStr = Utils.padTime(now.getHours(), now.getMinutes());
+      await Api.markAttendance("checkout", timeStr);
+
+      // ⚡ إعادة جلب البيانات الحديثة من السيرفر وإعادة رسم الواجهة بالكامل
+      if (typeof this.refresh === 'function') {
+        await this.refresh();
+      } else {
+        await AppState.load();
+        this.refreshTodayCard();
+        this.applyMonthFilter(AppState.attendanceSelectedMonth);
+      }
+
+      Utils.toast("Checked out at " + timeStr);
+    } catch(err){
+      console.error("Check-out error:", err);
+      Utils.toast(err.message || "Failed to check out", true);
+      btn.disabled = false;
+    }
+  },
+
+  /* ---------- Month filter ---------- */
+  populateMonthSelect(){
+    const select = document.getElementById('attendance-month-select');
+    const months = [...new Set(AppState.attendanceAll.map(r => r.date.slice(0,7)))].sort().reverse();
+    const current = months[0];
+
+    select.innerHTML = months.map(m => `<option value="${m}">${Utils.monthLabel(m)}</option>`).join("");
+    AppState.attendanceSelectedMonth = AppState.attendanceSelectedMonth && months.includes(AppState.attendanceSelectedMonth)
+      ? AppState.attendanceSelectedMonth
+      : current;
+    select.value = AppState.attendanceSelectedMonth;
+  },
+
+  applyMonthFilter(monthKey){
+    if(!monthKey) return;
+    AppState.attendanceSelectedMonth = monthKey;
+    const select = document.getElementById('attendance-month-select');
+    if(select) select.value = monthKey;
+
+    AppState.attendanceView = AppState.attendanceAll
+      .filter(r => r.date.slice(0,7) === monthKey)
+      .sort((a,b) => a.date < b.date ? 1 : -1);
+
+    this.renderTable(AppState.attendanceView);
+    this.renderStats(AppState.attendanceView);
+  },
+
+  /* ---------- Stats ---------- */
+  renderStats(records){
+    let presentDays = 0;
+    let totalMinutes = 0;
+
+   records.forEach(r => {
+      // حساب الساعات فقط إذا كان فيه وقت انصراف حقيقي ومش فارغ أو --
+      if (r.checkIn && r.checkOut && r.checkOut !== '--') {
+        presentDays++;
+        const mins = Utils.minutesBetween(r.checkIn, r.checkOut);
+        if (!isNaN(mins)) {
+          totalMinutes += mins;
+        }
+      } else if (r.checkIn) {
+        // لو سجل حضور بس ولسه ما انصرفش
+        presentDays++;
+      }
+    });
+
+    document.getElementById('attendance-stat-days').textContent = presentDays;
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    document.getElementById('attendance-stat-hours').textContent = h + "h " + m + "m";
+  },
+
+  /* ---------- Table rendering ---------- */
+  renderTable(records){
+    const tbody = document.getElementById('attendance-tbody');
+    const emptyEl = document.getElementById('attendance-empty');
+    const countLabel = document.getElementById('attendance-count-label');
+    const footerLeft = document.getElementById('attendance-footer-left');
+
+    tbody.innerHTML = "";
+
+    if(!records || records.length === 0){
+      emptyEl.style.display = "flex";
+      document.querySelector('#attendance-empty h4').textContent = "No records found";
+      document.querySelector('#attendance-empty p').textContent = "There is no attendance data for the selected month yet.";
+      countLabel.textContent = "0 records";
+      footerLeft.textContent = "0 records shown";
+      return;
+    }
+
+    emptyEl.style.display = "none";
+
+    const rows = records.map(r => {
+      const dateObj = new Date(r.date + "T00:00:00");
+      const dayName = dateObj.toLocaleDateString('en-GB', { weekday:'long' });
+      const hours = (r.checkIn && r.checkOut && r.checkOut !== '--') ? Utils.formatDuration(Utils.minutesBetween(r.checkIn, r.checkOut)) : "--";
+      const statusKey = (r.status || "").toLowerCase().replace(/\s+/g,'-');
+      const pillClass = {
+        "present":"present", "absent":"absent", "weekend":"weekend",
+        "leave":"leave", "not-marked":"pending"
+      }[statusKey] || "pending";
+
+      return `
+        <tr>
+          <td>${Utils.escapeHtml(r.date)}</td>
+          <td>${Utils.escapeHtml(dayName)}</td>
+          <td>${Utils.escapeHtml(r.checkIn) || "—"}</td>
+          <td>${Utils.escapeHtml(r.checkOut) || "—"}</td>
+          <td>${hours}</td>
+          <td><span class="status-pill ${pillClass}">${Utils.escapeHtml(r.status)}</span></td>
+        </tr>
+      `;
+    }).join("");
+
+    tbody.innerHTML = rows;
+    countLabel.textContent = records.length + (records.length === 1 ? " record" : " records");
+    footerLeft.textContent = records.length + " records shown";
+  },
+
+  init(){
+    document.getElementById('checkin-btn').addEventListener('click', () => this.checkIn());
+    document.getElementById('checkout-btn').addEventListener('click', () => this.checkOut());
+    document.getElementById('refresh-attendance-btn').addEventListener('click', () => this.refresh());
+    document.getElementById('attendance-month-select').addEventListener('change', (e) => this.applyMonthFilter(e.target.value));
+  }
+};
+
+/* ================================================================
    SEARCH FUNCTIONS
    Instant client-side filtering across the key stock fields.
    ================================================================ */
@@ -1213,6 +2296,8 @@ document.addEventListener('DOMContentLoaded', () => {
   Auth.init();
   Sidebar.init();
   Search.init();
+  Attendance.init();
+  Transactions.init();
 
   document.getElementById('refresh-stock-btn').addEventListener('click', () => Stock.refresh());
 });
