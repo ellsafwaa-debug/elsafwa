@@ -1292,7 +1292,7 @@
       <span class="nav-label">Transactions</span>
     </div>
 
-    <div id="admin-nav-section">
+    <div id="nav-admin-group">
       <div class="nav-section-label">Administration</div>
       <div class="nav-item" data-page="users">
         <span class="nav-icon">
@@ -1919,6 +1919,19 @@ const AppState = {
    ================================================================ */
 const Utils = {
   /**
+   * Returns true when the given role string identifies an administrator.
+   * Matches "Administrator", "Admin", any casing/whitespace variant — this
+   * is what gates the Administration section (Users + Reports) in the
+   * sidebar and in the router. NOTE: this is a client-side UI gate only;
+   * the backend/API must also enforce this, since anyone can edit the
+   * page's JS in devtools.
+   */
+  isAdminRole(role){
+    const r = String(role || "").trim().toLowerCase();
+    return r === "admin" || r === "administrator";
+  },
+
+  /**
    * Animates the text of `el` counting from whatever number is currently
    * displayed up (or down) to `targetValue`, keeping any surrounding text
    * (e.g. "42 units in") intact by only replacing the numeric run. Used for
@@ -2290,15 +2303,18 @@ const Sidebar = {
     document.getElementById('sidebar-username').textContent = user.name;
     document.getElementById('sidebar-role').textContent = user.role;
     document.getElementById('sidebar-avatar').textContent = Utils.initials(user.name);
+    this.updateAdminVisibility();
+  },
 
-    const isAdmin = /^admin/i.test((user.role || "").trim());
-    const adminSection = document.getElementById('admin-nav-section');
-    if(adminSection) adminSection.style.display = isAdmin ? "" : "none";
-
-    // If a non-admin somehow lands on an admin-only page, send them home instead.
-    if(!isAdmin && Router.current && (Router.current === 'users' || Router.current === 'reports')){
-      Router.goTo('home');
-    }
+  /**
+   * Shows/hides the whole "Administration" nav group (Users + Reports)
+   * depending on whether the current user's role is an admin role.
+   */
+  updateAdminVisibility(){
+    const group = document.getElementById('nav-admin-group');
+    if(!group) return;
+    const isAdmin = Utils.isAdminRole(AppState.currentUser && AppState.currentUser.role);
+    group.style.display = isAdmin ? "" : "none";
   },
 
   setActive(pageId){
@@ -2339,9 +2355,8 @@ const Router = {
     const def = this.pages[pageId];
     if(!def) return;
 
-    if(this.adminOnlyPages.includes(pageId)){
-      const role = (AppState.currentUser && AppState.currentUser.role) || "";
-      if(!/^admin/i.test(role.trim())) pageId = 'home';
+    if(this.adminOnlyPages.includes(pageId) && !Utils.isAdminRole(AppState.currentUser && AppState.currentUser.role)){
+      pageId = 'home';
     }
     const finalDef = this.pages[pageId];
 
