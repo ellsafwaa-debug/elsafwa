@@ -1292,20 +1292,18 @@
       <span class="nav-label">Transactions</span>
     </div>
 
-    <div id="nav-admin-group">
-      <div class="nav-section-label">Administration</div>
-      <div class="nav-item" data-page="users">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        </span>
-        <span class="nav-label">Users</span>
-      </div>
-      <div class="nav-item" data-page="reports">
-        <span class="nav-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
-        </span>
-        <span class="nav-label">Reports</span>
-      </div>
+    <div class="nav-section-label">Administration</div>
+    <div class="nav-item" data-page="users">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <span class="nav-label">Users</span>
+    </div>
+    <div class="nav-item" data-page="reports">
+      <span class="nav-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+      </span>
+      <span class="nav-label">Reports</span>
     </div>
 
     <div class="sidebar-footer">
@@ -1919,19 +1917,6 @@ const AppState = {
    ================================================================ */
 const Utils = {
   /**
-   * Returns true when the given role string identifies an administrator.
-   * Matches "Administrator", "Admin", any casing/whitespace variant — this
-   * is what gates the Administration section (Users + Reports) in the
-   * sidebar and in the router. NOTE: this is a client-side UI gate only;
-   * the backend/API must also enforce this, since anyone can edit the
-   * page's JS in devtools.
-   */
-  isAdminRole(role){
-    const r = String(role || "").trim().toLowerCase();
-    return r === "admin" || r === "administrator";
-  },
-
-  /**
    * Animates the text of `el` counting from whatever number is currently
    * displayed up (or down) to `targetValue`, keeping any surrounding text
    * (e.g. "42 units in") intact by only replacing the numeric run. Used for
@@ -2303,18 +2288,6 @@ const Sidebar = {
     document.getElementById('sidebar-username').textContent = user.name;
     document.getElementById('sidebar-role').textContent = user.role;
     document.getElementById('sidebar-avatar').textContent = Utils.initials(user.name);
-    this.updateAdminVisibility();
-  },
-
-  /**
-   * Shows/hides the whole "Administration" nav group (Users + Reports)
-   * depending on whether the current user's role is an admin role.
-   */
-  updateAdminVisibility(){
-    const group = document.getElementById('nav-admin-group');
-    if(!group) return;
-    const isAdmin = Utils.isAdminRole(AppState.currentUser && AppState.currentUser.role);
-    group.style.display = isAdmin ? "" : "none";
   },
 
   setActive(pageId){
@@ -2349,29 +2322,23 @@ const Router = {
     reports: { title:"Reports", subtitle:"Monthly attendance report & PDF export", onEnter: () => Reports.onEnter() }
   },
   current: null,
-  adminOnlyPages: ['users', 'reports'],
 
   goTo(pageId){
     const def = this.pages[pageId];
     if(!def) return;
 
-    if(this.adminOnlyPages.includes(pageId) && !Utils.isAdminRole(AppState.currentUser && AppState.currentUser.role)){
-      pageId = 'home';
-    }
-    const finalDef = this.pages[pageId];
-
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById('page-' + pageId);
     if(target) target.classList.add('active');
 
-    document.getElementById('topbar-title').childNodes[0].textContent = finalDef.title + " ";
-    document.getElementById('topbar-subtitle').textContent = finalDef.subtitle;
+    document.getElementById('topbar-title').childNodes[0].textContent = def.title + " ";
+    document.getElementById('topbar-subtitle').textContent = def.subtitle;
     document.getElementById('topbar-date').textContent = Utils.todayFormatted();
 
     Sidebar.setActive(pageId);
     this.current = pageId;
 
-    if(typeof finalDef.onEnter === "function") finalDef.onEnter();
+    if(typeof def.onEnter === "function") def.onEnter();
   }
 };
 
