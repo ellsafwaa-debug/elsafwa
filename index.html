@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>El Safwa System | Inventory Management</title>
+<title>El Safwa System | Medical Manufacturing &amp; Supply</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -99,6 +99,7 @@
     display:flex; align-items:center; gap:14px;
     position:relative; z-index:1;
     margin-bottom:48px;
+    animation:loginRise 520ms cubic-bezier(0.2,0.6,0.3,1) backwards;
   }
   .login-mark .logo-sq{
     width:52px; height:52px; border-radius:14px;
@@ -106,9 +107,14 @@
     display:flex; align-items:center; justify-content:center;
     font-family:var(--font-display); font-weight:800; font-size:20px; color:#fff;
     box-shadow:0 8px 20px rgba(18,165,148,0.35);
+    animation:logoGlow 3.2s ease-in-out infinite;
   }
   .login-mark .logo-word{
     font-family:var(--font-display); font-weight:700; font-size:20px; color:#fff; letter-spacing:0.2px;
+  }
+  @keyframes logoGlow{
+    0%, 100%{ box-shadow:0 8px 20px rgba(18,165,148,0.35); }
+    50%{ box-shadow:0 8px 28px rgba(18,165,148,0.6); }
   }
   .login-headline{
     position:relative; z-index:1;
@@ -119,6 +125,7 @@
     color:#ffffff;
     max-width:480px;
     margin:0 0 18px 0;
+    animation:loginRise 560ms 80ms cubic-bezier(0.2,0.6,0.3,1) backwards;
   }
   .login-headline span{ color:var(--accent); }
   .login-sub{
@@ -127,13 +134,27 @@
     font-size:15.5px;
     max-width:400px;
     line-height:1.6;
+    animation:loginRise 560ms 160ms cubic-bezier(0.2,0.6,0.3,1) backwards;
   }
+  .login-pulse{ position:relative; z-index:1; margin-top:52px; animation:loginRise 560ms 260ms cubic-bezier(0.2,0.6,0.3,1) backwards; }
+  .login-pulse svg{ width:100%; height:30px; display:block; }
+  .login-pulse polyline{
+    fill:none; stroke:var(--accent); stroke-width:2;
+    stroke-linecap:round; stroke-linejoin:round;
+    opacity:0.85;
+    filter:drop-shadow(0 0 5px rgba(18,165,148,0.45));
+    stroke-dasharray:620;
+    stroke-dashoffset:620;
+    animation:pulseDraw 1.6s 500ms cubic-bezier(0.4,0,0.2,1) forwards;
+  }
+  @keyframes pulseDraw{ to{ stroke-dashoffset:0; } }
+  @keyframes loginRise{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:translateY(0); } }
   .login-stats{
     position:relative; z-index:1;
     display:flex; gap:36px;
-    margin-top:56px;
-    padding-top:28px;
-    border-top:1px solid rgba(255,255,255,0.08);
+    margin-top:18px;
+    padding-top:18px;
+    animation:loginRise 560ms 420ms cubic-bezier(0.2,0.6,0.3,1) backwards;
   }
   .login-stats div b{
     display:block; font-family:var(--font-display); font-size:22px; color:#fff; font-weight:700;
@@ -148,6 +169,7 @@
     flex-direction:column;
     justify-content:center;
     padding:56px 56px;
+    animation:loginRise 500ms 120ms cubic-bezier(0.2,0.6,0.3,1) backwards;
   }
   .login-form-title{
     font-family:var(--font-display);
@@ -200,7 +222,7 @@
     display:flex; align-items:center; justify-content:center; gap:10px;
   }
   .btn-signin:hover{ background:var(--accent-dark); transform:translateY(-1px); box-shadow:var(--shadow-md); }
-  .btn-signin:active{ transform:translateY(0); }
+  .btn-signin:active{ transform:translateY(0) scale(0.98); }
   .btn-signin:disabled{ opacity:0.65; cursor:not-allowed; transform:none; }
 
   .login-error{
@@ -252,6 +274,19 @@
     display:flex;
     flex-direction:column;
     padding:22px 16px;
+    position:relative;
+  }
+  .nav-indicator{
+    position:absolute;
+    left:16px; right:16px; top:0;
+    height:41px;
+    border-radius:10px;
+    background:var(--accent-soft);
+    transform:translateY(0px);
+    transition:transform 340ms cubic-bezier(0.34,1.35,0.64,1), height 220ms ease, opacity 200ms ease;
+    opacity:0;
+    z-index:0;
+    pointer-events:none;
   }
   .sidebar-brand{
     display:flex; align-items:center; gap:12px;
@@ -291,17 +326,21 @@
     font-weight:500;
     cursor:pointer;
     margin-bottom:3px;
-    transition:var(--transition);
+    transition:var(--transition), transform 120ms ease;
     user-select:none;
     position:relative;
+    z-index:1;
   }
+  .nav-item:active{ transform:scale(0.98); }
   .nav-item .nav-icon{
     width:19px; height:19px;
     display:flex; align-items:center; justify-content:center;
     flex-shrink:0;
+    transition:transform 220ms cubic-bezier(0.34,1.56,0.64,1);
   }
   .nav-item:hover{ background:var(--sidebar-hover); color:var(--sidebar-text-active); }
-  .nav-item.active{ background:var(--accent-soft); color:#fff; }
+  .nav-item.active{ color:#fff; }
+  .nav-item.active .nav-icon{ transform:scale(1.08); }
   .nav-item.active::before{
     content:"";
     position:absolute; left:-16px; top:8px; bottom:8px; width:3px;
@@ -430,13 +469,20 @@
     border:1px solid var(--border);
     box-shadow:var(--shadow-sm);
     transition:var(--transition);
+    animation:cardIn 380ms cubic-bezier(0.2,0.6,0.3,1) backwards;
   }
+  .stat-card:nth-child(1){ animation-delay:0ms; }
+  .stat-card:nth-child(2){ animation-delay:60ms; }
+  .stat-card:nth-child(3){ animation-delay:120ms; }
   .stat-card:hover{ box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .stat-card:hover .stat-icon{ transform:scale(1.08); }
   .stat-card .stat-icon{
     width:38px; height:38px; border-radius:10px;
     display:flex; align-items:center; justify-content:center;
     margin-bottom:14px;
+    transition:transform 220ms cubic-bezier(0.34,1.56,0.64,1);
   }
+  @keyframes cardIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
   .stat-card .stat-label{ font-size:12.5px; color:var(--text-secondary); font-weight:600; margin-bottom:4px; }
   .stat-card .stat-value{ font-family:var(--font-display); font-size:24px; font-weight:800; color:var(--text-primary); }
 
@@ -503,6 +549,7 @@
     transition:var(--transition);
   }
   .btn-refresh:hover{ border-color:var(--accent); color:var(--accent); }
+  .btn-refresh:active{ transform:scale(0.96); }
   .btn-refresh svg{ transition:transform 0.4s ease; }
   .btn-refresh.spinning svg{ animation:spin 0.8s linear infinite; }
 
@@ -513,7 +560,12 @@
     box-shadow:var(--shadow-sm);
     overflow:hidden;
   }
-  .table-scroll{ overflow-x:auto; }
+  .table-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+  }
+  .table-scroll::-webkit-scrollbar{ height:8px; }
   table{ width:100%; border-collapse:collapse; font-size:13.5px; }
   thead th{
     text-align:left;
@@ -533,7 +585,19 @@
     color:var(--text-primary);
     white-space:nowrap;
   }
-  tbody tr{ transition:background var(--transition); }
+  tbody tr{ transition:background var(--transition); animation:rowIn 320ms cubic-bezier(0.2,0.6,0.3,1) backwards; }
+  tbody tr:nth-child(1){ animation-delay:0ms; }
+  tbody tr:nth-child(2){ animation-delay:20ms; }
+  tbody tr:nth-child(3){ animation-delay:40ms; }
+  tbody tr:nth-child(4){ animation-delay:60ms; }
+  tbody tr:nth-child(5){ animation-delay:80ms; }
+  tbody tr:nth-child(6){ animation-delay:100ms; }
+  tbody tr:nth-child(7){ animation-delay:120ms; }
+  tbody tr:nth-child(8){ animation-delay:140ms; }
+  tbody tr:nth-child(9){ animation-delay:160ms; }
+  tbody tr:nth-child(10){ animation-delay:180ms; }
+  tbody tr:nth-child(n+11){ animation-delay:200ms; }
+  @keyframes rowIn{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:translateY(0); } }
   tbody tr:hover{ background:#fafbfc; }
   tbody tr:last-child td{ border-bottom:none; }
   .code-pill{
@@ -696,6 +760,92 @@
   .status-pill.leave{ background:rgba(240,160,32,0.14); color:var(--warning); }
   .status-pill.pending{ background:rgba(90,120,255,0.12); color:#5a78ff; }
 
+  /* ---------- USERS & REPORTS PAGES ---------- */
+  .btn-solid{
+    display:flex; align-items:center; gap:8px;
+    padding:10px 18px;
+    background:var(--accent);
+    border:none;
+    border-radius:var(--radius-sm);
+    font-size:13.5px; font-weight:700; color:#fff;
+    cursor:pointer;
+    transition:var(--transition);
+    white-space:nowrap;
+  }
+  .btn-solid:hover{ background:var(--accent-dark); transform:translateY(-1px); box-shadow:var(--shadow-md); }
+  .btn-solid:active{ transform:translateY(0) scale(0.97); }
+  .reports-toolbar-left{ display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  #report-month-input.month-select{ min-width:170px; }
+  .report-print-header{
+    padding:22px 24px 4px;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+  }
+  .report-print-header h3{
+    margin:0 0 4px 0; font-family:var(--font-display); font-size:18px; font-weight:800; color:var(--text-primary);
+  }
+  .report-print-header p{ margin:0; font-size:13px; color:var(--text-secondary); }
+  .btn-outline-sm{
+    display:flex; align-items:center; gap:6px;
+    padding:7px 13px;
+    background:transparent;
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-sm);
+    font-size:12.5px; font-weight:700; color:var(--text-secondary);
+    cursor:pointer;
+    transition:var(--transition);
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .btn-outline-sm:hover{ border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+  .btn-outline-sm:active{ transform:scale(0.96); }
+
+  #inventory-summary-card{ margin-top:20px; padding-bottom:24px; }
+  .inv-summary-stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+    gap:16px;
+    padding:4px 24px 20px;
+  }
+  .inv-stat-tile{
+    display:flex; align-items:flex-start; gap:14px;
+    padding:16px 18px;
+    border-radius:var(--radius-md);
+    border:1px solid var(--border);
+    background:var(--bg);
+    transition:var(--transition);
+    animation:cardIn 380ms cubic-bezier(0.2,0.6,0.3,1) backwards;
+  }
+  .inv-stat-tile:nth-child(1){ animation-delay:0ms; }
+  .inv-stat-tile:nth-child(2){ animation-delay:70ms; }
+  .inv-stat-tile:hover{ box-shadow:var(--shadow-sm); transform:translateY(-2px); border-color:var(--accent); }
+  .inv-stat-icon{
+    width:36px; height:36px; flex-shrink:0;
+    border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .inv-in .inv-stat-icon{ background:var(--success-soft); color:var(--success); }
+  .inv-out .inv-stat-icon{ background:var(--danger-soft); color:var(--danger); }
+  .inv-stat-label{ font-size:12.5px; color:var(--text-secondary); font-weight:600; margin-bottom:4px; }
+  .inv-stat-value{ font-family:var(--font-display); font-size:16px; font-weight:800; color:var(--text-primary); line-height:1.3; }
+  .inv-stat-qty{ font-size:12.5px; color:var(--text-muted); margin-top:2px; }
+  .inv-chart-wrap{ padding:0 24px 24px; height:280px; position:relative; }
+
+  #stock-ranking-card{ margin-top:20px; padding-bottom:24px; }
+  .stock-ranking-body{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    padding:0 24px 8px;
+  }
+  .stock-ranking-col-title{
+    font-size:12.5px; font-weight:700; color:var(--text-secondary);
+    margin-bottom:10px;
+  }
+  .stock-rank-chart-wrap{ padding:0; height:220px; }
+  @media (max-width: 860px){
+    .stock-ranking-body{ grid-template-columns:1fr; }
+  }
+
   /* ---------- Responsive ---------- */
   /* ---------- TRANSACTIONS PAGE ---------- */
   .btn-new-tx{
@@ -833,6 +983,140 @@
     .topbar{ padding:0 20px; }
   }
 
+  /* ============================================================
+     MOBILE / TABLET RESPONSIVE LAYER
+     ============================================================ */
+  .hamburger-btn{
+    display:none;
+    align-items:center; justify-content:center;
+    width:38px; height:38px;
+    border:none;
+    background:transparent;
+    color:var(--text-primary);
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    flex-shrink:0;
+    transition:var(--transition);
+  }
+  .hamburger-btn:hover{ background:var(--bg); }
+  .hamburger-btn:active{ transform:scale(0.94); }
+  .topbar-left{ display:flex; align-items:center; gap:6px; min-width:0; }
+  .topbar-left .topbar-title{ min-width:0; }
+
+  .sidebar-overlay{
+    display:none;
+    position:fixed; inset:0;
+    background:rgba(10,14,22,0.5);
+    z-index:59;
+    opacity:0;
+    transition:opacity 220ms ease;
+  }
+
+  /* ---- Tablet / narrow window: icon-rail sidebar (already handled above at 900px) ---- */
+  @media (max-width: 900px) and (min-width: 641px){
+    .stat-grid, .inv-stat-grid{ grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); }
+    .welcome-card{ padding:32px 30px; }
+  }
+
+  /* ---- Mobile phones & narrow tablets: off-canvas drawer sidebar ---- */
+  @media (max-width: 640px){
+    #app-shell{ position:relative; overflow:hidden; }
+
+    .hamburger-btn{ display:flex; }
+
+    .sidebar{
+      position:fixed;
+      top:0; left:0; bottom:0;
+      width:264px;
+      max-width:82vw;
+      z-index:60;
+      transform:translateX(-100%);
+      transition:transform 260ms cubic-bezier(0.4,0,0.2,1);
+      box-shadow:var(--shadow-lg);
+      padding:20px 14px;
+    }
+    #app-shell.sidebar-open .sidebar{ transform:translateX(0); }
+    #app-shell.sidebar-open .sidebar-overlay{ display:block; opacity:1; }
+
+    /* restore full labels inside the drawer — this is a full menu, not an icon rail */
+    .sidebar-brand .brand-text,
+    .nav-item span.nav-label,
+    .nav-section-label,
+    .sidebar-user .user-meta{ display:block; }
+    .nav-item{ justify-content:flex-start; }
+    .sidebar-user{ justify-content:flex-start; }
+
+    .content-area{ width:100%; }
+
+    .topbar{ height:60px; padding:0 14px; }
+    .topbar-title{ font-size:15.5px; }
+    .topbar-title span{ font-size:11px; }
+    .topbar-date{ display:none; }
+
+    .page{ padding:14px; }
+
+    /* Login screen */
+    .login-form-panel{ padding:32px 20px; }
+    .login-form-title{ font-size:21px; }
+    .login-form-desc{ font-size:13px; margin-bottom:24px; }
+
+    /* Home / general grids to single column */
+    .stat-grid, .inv-stat-grid{ grid-template-columns:1fr; gap:12px; }
+    .welcome-card{ padding:26px 20px; border-radius:var(--radius-md); }
+    .welcome-card h1{ font-size:22px; }
+    .info-card{ padding:18px 16px; }
+
+    /* Attendance hero */
+    .attendance-hero{ padding:24px 20px; flex-direction:column; align-items:flex-start; }
+    .attendance-clock{ font-size:32px; }
+    .attendance-actions{ width:100%; }
+    .btn-attendance{ flex:1; justify-content:center; padding:13px 16px; }
+
+    /* Stock toolbar */
+    .stock-toolbar{ flex-direction:column; align-items:stretch; gap:12px; }
+    .search-box{ max-width:100%; min-width:0; }
+    .toolbar-meta{ justify-content:space-between; }
+
+    /* Tables: allow horizontal scroll, tighten cell spacing */
+    table{ font-size:12.5px; min-width:640px; }
+    thead th, tbody td{ padding:11px 14px; }
+    .table-card{ position:relative; }
+    .table-card::before{
+      content:"⇆  اسحب الجدول يمين ويسار لعرض كل الأعمدة";
+      display:block;
+      font-size:11.5px;
+      font-weight:600;
+      color:var(--text-secondary);
+      background:var(--bg);
+      padding:8px 14px;
+      border-bottom:1px solid var(--border);
+      direction:rtl;
+      text-align:right;
+    }
+
+    /* Ranking / comparison charts stack on mobile regardless of viewport width */
+    .stock-ranking-body{ grid-template-columns:1fr; }
+
+    /* Modal */
+    .modal-box{ max-width:100%; margin:0 4px; }
+    .modal-header{ padding:16px 18px; }
+    .modal-body{ padding:18px; }
+    .modal-footer{ padding:14px 18px; flex-direction:column-reverse; }
+    .modal-footer .btn-signin, .modal-footer .btn-cancel{ flex:none; width:100%; }
+    .tx-type-toggle{ flex-direction:row; }
+
+    /* Reports toolbar */
+    .reports-toolbar-left{ width:100%; gap:12px; }
+
+    .toast{ left:14px; right:14px; bottom:14px; }
+  }
+
+  @media (max-width: 400px){
+    .login-mark{ margin-bottom:24px; }
+    .attendance-clock{ font-size:26px; }
+    .stat-card{ padding:16px 16px; }
+  }
+
   .toast{
     position:fixed; bottom:24px; right:24px;
     background:var(--sidebar-bg); color:#fff;
@@ -847,7 +1131,18 @@
   }
   .toast.show{ transform:translateY(0); opacity:1; }
   .toast.error{ background:var(--danger); }
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:0.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:0.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -857,15 +1152,22 @@
 <div id="login-screen">
   <div class="login-brand-panel">
     <div class="login-mark">
-      <div class="logo-sq">ES</div>
+      <div class="logo-sq">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      </div>
       <div class="logo-word">El Safwa System</div>
     </div>
-    <h1 class="login-headline">Inventory, <span>under control.</span></h1>
-    <p class="login-sub">One workspace to track parts, storage locations and stock levels across your warehouse — synced live with Google Sheets.</p>
+    <h1 class="login-headline">Medical stock, <span>under control.</span></h1>
+    <p class="login-sub">One workspace for a medical manufacturing &amp; supply operation — track parts, batches, storage locations and stock levels across the floor, synced live with Google Sheets.</p>
+    <div class="login-pulse" aria-hidden="true">
+      <svg viewBox="0 0 400 40" preserveAspectRatio="none">
+        <polyline points="0,20 55,20 72,20 82,5 92,35 102,20 118,20 150,20 167,20 177,10 187,30 197,20 400,20"/>
+      </svg>
+    </div>
     <div class="login-stats">
       <div><b>Live</b><span>Real-time stock sync</span></div>
+      <div><b>Traceable</b><span>Batch &amp; lot tracking</span></div>
       <div><b>Secure</b><span>Google Sheets auth</span></div>
-      <div><b>ERP</b><span>Built to scale up</span></div>
     </div>
   </div>
   <div class="login-form-panel">
@@ -891,7 +1193,7 @@
         <span id="signin-label">Sign In</span>
       </button>
     </form>
-    <p class="login-note">&copy; <span id="year-note"></span> El Safwa System — Inventory Management</p>
+    <p class="login-note">&copy; <span id="year-note"></span> El Safwa System — Medical Manufacturing &amp; Supply</p>
   </div>
 </div>
 
@@ -900,15 +1202,22 @@
      ============================================================ -->
 <div id="app-shell">
 
+  <!-- MOBILE SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="app-sidebar">
     <div class="sidebar-brand">
-      <div class="logo-sq">ES</div>
+      <div class="logo-sq">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 12h18" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/></svg>
+      </div>
       <div class="brand-text">
         <b>El Safwa System</b>
-        <span>Inventory Management</span>
+        <span>Medical Manufacturing &amp; Supply</span>
       </div>
     </div>
+
+    <div class="nav-indicator" id="nav-indicator"></div>
 
     <div class="nav-section-label">Menu</div>
     <div class="nav-item active" data-page="home">
@@ -936,20 +1245,18 @@
       <span class="nav-label">Transactions</span>
     </div>
 
-    <div class="nav-section-label">Coming Soon</div>
-    <div class="nav-item disabled" title="Coming soon">
+    <div class="nav-section-label">Administration</div>
+    <div class="nav-item" data-page="users">
       <span class="nav-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       </span>
       <span class="nav-label">Users</span>
-      <span class="nav-badge">SOON</span>
     </div>
-    <div class="nav-item disabled" title="Coming soon">
+    <div class="nav-item" data-page="reports">
       <span class="nav-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
       </span>
       <span class="nav-label">Reports</span>
-      <span class="nav-badge">SOON</span>
     </div>
 
     <div class="sidebar-footer">
@@ -972,8 +1279,13 @@
   <!-- CONTENT AREA -->
   <div class="content-area">
     <div class="topbar">
-      <div class="topbar-title" id="topbar-title">Home
-        <span id="topbar-subtitle">Overview of your workspace</span>
+      <div class="topbar-left">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="topbar-title" id="topbar-title">Home
+          <span id="topbar-subtitle">Overview of your workspace</span>
+        </div>
       </div>
       <div class="topbar-date" id="topbar-date">—</div>
     </div>
@@ -981,7 +1293,7 @@
     <!-- HOME PAGE -->
     <div class="page active" id="page-home">
       <div class="welcome-card">
-        <div class="eyebrow">Inventory Management System</div>
+        <div class="eyebrow">Medical Manufacturing &amp; Supply</div>
         <h1>Welcome, <span id="home-username">User</span></h1>
         <p id="home-role-line">Role: —</p>
       </div>
@@ -1013,7 +1325,7 @@
       <div class="info-card">
         <h3>System Information</h3>
         <div class="info-row"><span class="label">System Name</span><span class="value">El Safwa System</span></div>
-        <div class="info-row"><span class="label">Module</span><span class="value">Inventory Management System</span></div>
+        <div class="info-row"><span class="label">Module</span><span class="value">Medical Manufacturing &amp; Supply</span></div>
         <div class="info-row"><span class="label">Signed in as</span><span class="value" id="info-user">—</span></div>
         <div class="info-row"><span class="label">Access level</span><span class="value" id="info-role">—</span></div>
       </div>
@@ -1212,6 +1524,245 @@
       </div>
     </div>
 
+    <!-- USERS PAGE -->
+    <div class="page" id="page-users">
+      <div class="stock-toolbar">
+        <div class="toolbar-meta">
+          <span id="users-count-label">0 users</span>
+        </div>
+        <button class="btn-solid" id="new-user-btn" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add New User
+        </button>
+      </div>
+
+      <div class="table-card">
+        <div class="table-scroll">
+          <table id="users-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Active</th>
+              </tr>
+            </thead>
+            <tbody id="users-tbody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+          <div class="empty-state" id="users-empty" style="display:none;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <h4>No users yet</h4>
+            <p>Click "Add New User" to create the first account.</p>
+          </div>
+        </div>
+        <div class="table-footer">
+          <span id="users-footer-left">—</span>
+          <span>Local user directory</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS PAGE -->
+    <div class="page" id="page-reports">
+      <div class="stock-toolbar">
+        <div class="reports-toolbar-left">
+          <div class="month-select-wrap">
+            <label for="report-employee-select">Employee</label>
+            <select id="report-employee-select" class="month-select">
+              <option value="">Select an employee…</option>
+            </select>
+          </div>
+          <div class="month-select-wrap">
+            <label for="report-month-input">Month</label>
+            <input type="month" id="report-month-input" class="month-select">
+          </div>
+          <span id="report-count-label">—</span>
+        </div>
+      </div>
+
+      <div id="report-pdf-root">
+        <div class="table-card" id="report-container">
+          <div class="report-print-header">
+            <div>
+              <h3 id="report-title-print">Monthly Attendance Report</h3>
+              <p id="report-subtitle-print">—</p>
+            </div>
+            <button class="btn-outline-sm pdf-hide" type="button" data-pdf-target="report-container" data-pdf-name="Attendance_Report" data-pdf-month="1">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PDF
+            </button>
+          </div>
+          <div class="table-scroll">
+            <table id="report-table">
+              <thead>
+                <tr>
+                  <th>Employee Name</th>
+                  <th>Date</th>
+                  <th>Check-In</th>
+                  <th>Check-Out</th>
+                  <th>Total Hours</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="report-tbody">
+                <!-- rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+          <div class="table-footer">
+            <span id="report-footer-left">—</span>
+            <span id="report-footer-right">Generated report</span>
+          </div>
+        </div>
+
+        <div class="table-card" id="inventory-summary-card">
+          <div class="report-print-header">
+            <div>
+              <h3>Inventory Movement Summary</h3>
+              <p id="inventory-summary-subtitle">—</p>
+            </div>
+            <button class="btn-outline-sm pdf-hide" type="button" data-pdf-target="inventory-summary-card" data-pdf-name="Inventory_Movement_Summary" data-pdf-month="1">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PDF
+            </button>
+          </div>
+
+          <div class="inv-summary-stats">
+            <div class="inv-stat-tile inv-in">
+              <div class="inv-stat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              </div>
+              <div class="inv-stat-body">
+                <div class="inv-stat-label">Most Received Product</div>
+                <div class="inv-stat-value" id="inv-top-in-name">—</div>
+                <div class="inv-stat-qty" id="inv-top-in-qty">0 units in</div>
+              </div>
+            </div>
+            <div class="inv-stat-tile inv-out">
+              <div class="inv-stat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+              </div>
+              <div class="inv-stat-body">
+                <div class="inv-stat-label">Most Issued Product</div>
+                <div class="inv-stat-value" id="inv-top-out-name">—</div>
+                <div class="inv-stat-qty" id="inv-top-out-qty">0 units out</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="inv-chart-wrap">
+            <canvas id="inventory-comparison-chart" height="230"></canvas>
+          </div>
+
+          <div class="empty-state" id="inventory-summary-empty" style="display:none;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            <h4>No stock movement yet</h4>
+            <p>No Stock In / Stock Out transactions recorded for this month.</p>
+          </div>
+        </div>
+
+        <div class="table-card" id="stock-ranking-card">
+          <div class="report-print-header">
+            <div>
+              <h3>Stock Level Ranking</h3>
+              <p id="stock-ranking-subtitle">—</p>
+            </div>
+            <button class="btn-outline-sm pdf-hide" type="button" data-pdf-target="stock-ranking-card" data-pdf-name="Stock_Level_Ranking" data-pdf-month="0">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              PDF
+            </button>
+          </div>
+
+          <div class="inv-summary-stats">
+            <div class="inv-stat-tile inv-in">
+              <div class="inv-stat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+              </div>
+              <div class="inv-stat-body">
+                <div class="inv-stat-label">Highest Stock Item</div>
+                <div class="inv-stat-value" id="stock-highest-name">—</div>
+                <div class="inv-stat-qty" id="stock-highest-qty">—</div>
+              </div>
+            </div>
+            <div class="inv-stat-tile inv-out">
+              <div class="inv-stat-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+              </div>
+              <div class="inv-stat-body">
+                <div class="inv-stat-label">Lowest Stock Item</div>
+                <div class="inv-stat-value" id="stock-lowest-name">—</div>
+                <div class="inv-stat-qty" id="stock-lowest-qty">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stock-ranking-body">
+            <div class="stock-ranking-col">
+              <div class="stock-ranking-col-title">Top 5 — Most in Stock</div>
+              <div class="inv-chart-wrap stock-rank-chart-wrap">
+                <canvas id="stock-high-chart"></canvas>
+              </div>
+            </div>
+            <div class="stock-ranking-col">
+              <div class="stock-ranking-col-title">Top 5 — Least in Stock</div>
+              <div class="inv-chart-wrap stock-rank-chart-wrap">
+                <canvas id="stock-low-chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty-state" id="stock-ranking-empty" style="display:none;">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            <h4>No stock items yet</h4>
+            <p>Load the Stock sheet to see the highest and lowest stocked items.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- NEW USER MODAL -->
+<div class="modal-overlay" id="user-modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Add New User</h3>
+      <button class="modal-close" id="user-modal-close" type="button">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="field-group">
+        <label>Username</label>
+        <input type="text" id="user-username-input" placeholder="e.g. ahmed.hassan">
+      </div>
+      <div class="field-group">
+        <label>Name</label>
+        <input type="text" id="user-name-input" placeholder="e.g. Ahmed Hassan">
+      </div>
+      <div class="field-group">
+        <label>Role</label>
+        <select id="user-role-select">
+          <option value="Administrator">Administrator</option>
+          <option value="Storekeeper" selected>Storekeeper</option>
+          <option value="Viewer">Viewer</option>
+        </select>
+      </div>
+      <div class="field-group" style="margin-bottom:8px;">
+        <label>Status</label>
+        <select id="user-status-select">
+          <option value="Active" selected>Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+      <div class="modal-error" id="user-modal-error"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="user-cancel-btn" type="button">Cancel</button>
+      <button class="btn-signin" id="user-confirm-btn" type="button">Add User</button>
+    </div>
   </div>
 </div>
 
@@ -1270,14 +1821,21 @@
    Insert your Google Apps Script Web App URLs here.
    ================================================================ */
 const CONFIG = {
+  // POST {username, password} handles login. GET ?action=users must also be
+  // supported by this same deployment — it returns the system's user list
+  // from wherever accounts are stored, e.g. [{username, role, status, lastActive}, ...].
+  // Used by the Users page.
   LOGIN_API: "https://script.google.com/macros/s/AKfycbxPbzAM6hK0G2b9b-lJYkPHFTdhaweZmPTFZJ-yPB1jPd5kwrqXopstixg57lE0DI5D/exec",
   // GET returns the Stock sheet as JSON. POST with {action:"transaction", ...}
   // is handled by the same Apps Script deployment to log a movement and
   // update the item's "In Stock" quantity — see the Code.gs provided separately.
   STOCK_API: "https://script.google.com/macros/s/AKfycbyol0Ov-baoglD2xEDCXL336Bw_loUoEz9ROg_FQ6Pc-N0KdqxWydbOg-WMeMYllUWs/exec",
-  // Paste your Apps Script Web App URL here (same pattern as LOGIN_API / STOCK_API).
-  // It must support GET ?user=NAME (returns that user's attendance history)
-  // and POST {action:"checkin"/"checkout", time, user} (writes to the Attendance sheet).
+  // GET ?user=NAME returns that user's own attendance history (used by the
+  // Attendance page). GET with no user param (or ?scope=all) must return
+  // EVERY user's rows from the same Attendance sheet, e.g.
+  // [{user, date, checkIn, checkOut, status}, ...] — used by the Reports page
+  // so the monthly report reflects the real, connected attendance data.
+  // POST {action:"checkin"/"checkout", time, user} writes to the sheet.
   ATTENDANCE_API: "https://script.google.com/macros/s/AKfycbxjU0HpU8MKfEQFdMGQHH4WVZ96y3869hPJHi7KX85GZq9b7AELUwpLiELDgOpWcDN2/exec"
 };
 
@@ -1297,13 +1855,49 @@ const AppState = {
   isAttendanceLoaded: false,
   attendanceSelectedMonth: null, // "YYYY-MM"
 
-  transactionsLog: []     // transactions submitted this session (newest first)
+  transactionsLog: [],    // transactions submitted this session (newest first)
+  isTransactionsLoaded: false,
+
+  usersData: [],          // loaded from LOGIN_API (list of system users)
+  isUsersLoaded: false,
+
+  allAttendance: [],      // every user's attendance rows, loaded from ATTENDANCE_API (used by Reports)
+  isAllAttendanceLoaded: false
 };
 
 /* ================================================================
    UTILITY FUNCTIONS
    ================================================================ */
 const Utils = {
+  /**
+   * Animates the text of `el` counting from whatever number is currently
+   * displayed up (or down) to `targetValue`, keeping any surrounding text
+   * (e.g. "42 units in") intact by only replacing the numeric run. Used for
+   * the Reports stat tiles so refreshed numbers feel alive instead of
+   * snapping instantly.
+   */
+  animateNumber(el, targetValue, suffix){
+    if(!el) return;
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(prefersReduced){
+      el.textContent = `${targetValue}${suffix || ""}`;
+      return;
+    }
+    const startText = (el.textContent || "").match(/-?\d+/);
+    const start = startText ? parseInt(startText[0], 10) : 0;
+    const duration = 500;
+    const startTime = performance.now();
+
+    const step = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const current = Math.round(start + (targetValue - start) * eased);
+      el.textContent = `${current}${suffix || ""}`;
+      if(progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  },
+
   todayFormatted(){
     const d = new Date();
     return d.toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
@@ -1483,6 +2077,45 @@ const Api = {
       body: JSON.stringify({ action, time: timeStr, user: AppState.currentUser.name })
     });
     return await response.json();
+  },
+
+  /**
+   * Fetch EVERY user's attendance rows from the same ATTENDANCE_API
+   * endpoint (no ?user= filter), used by the Reports page so the monthly
+   * report is built from the real Attendance sheet instead of made-up data.
+   * Expected response: array of { user, date, checkIn, checkOut, status }.
+   */
+  async getAllAttendance(){
+    if(!CONFIG.ATTENDANCE_API){
+      throw new Error("ATTENDANCE_API is not configured. Please set CONFIG.ATTENDANCE_API in the source code.");
+    }
+    const response = await fetch(CONFIG.ATTENDANCE_API + "?scope=all", { method:"GET" });
+    const data = await response.json();
+    return Array.isArray(data) ? data : (data.data || []);
+  },
+
+  /**
+   * Fetch the system's user list from the LOGIN_API Apps Script endpoint,
+   * used by the Users page (and by Reports to know which employees to list).
+   * Expected response: array of { username, name, role, status, lastActive }.
+   * "name" is the display name that also gets written to the Attendance
+   * sheet's User column on check-in/out (see AppState.currentUser.name).
+   */
+  async getUsers(){
+    if(!CONFIG.LOGIN_API){
+      throw new Error("LOGIN_API is not configured. Please set CONFIG.LOGIN_API in the source code.");
+    }
+    const response = await fetch(CONFIG.LOGIN_API + "?action=users", { method:"GET" });
+    const data = await response.json();
+    const list = Array.isArray(data) ? data : (data.data || []);
+    // Normalize key casing in case the sheet/script returns header-style keys.
+    return list.map(u => ({
+      username: u.username || u.Username || u.User || "",
+      name: u.name || u.Name || u.username || u.Username || "",
+      role: u.role || u.Role || "—",
+      status: u.status || u.Status || "Active",
+      lastActive: u.lastActive || u.LastActive || u["Last Active"] || "—"
+    }));
   }
 };
 
@@ -1553,6 +2186,8 @@ const Auth = {
     AppState.attendanceView = [];
     AppState.isAttendanceLoaded = false;
     AppState.attendanceSelectedMonth = null;
+    AppState.transactionsLog = [];
+    AppState.isTransactionsLoaded = false;
     if(Attendance.clockTimer){ clearInterval(Attendance.clockTimer); Attendance.clockTimer = null; }
 
     document.getElementById('app-shell').classList.remove('active');
@@ -1570,9 +2205,34 @@ const Auth = {
 const Sidebar = {
   init(){
     document.querySelectorAll('.nav-item[data-page]').forEach(item => {
-      item.addEventListener('click', () => Router.goTo(item.dataset.page));
+      item.addEventListener('click', () => {
+        Router.goTo(item.dataset.page);
+        this.closeMobile();
+      });
     });
     document.getElementById('logout-btn').addEventListener('click', Auth.logout);
+    window.addEventListener('resize', () => this.moveIndicator());
+
+    // Mobile off-canvas drawer controls
+    const hamburger = document.getElementById('hamburger-btn');
+    const overlay = document.getElementById('sidebar-overlay');
+    if(hamburger){
+      hamburger.addEventListener('click', () => this.toggleMobile());
+    }
+    if(overlay){
+      overlay.addEventListener('click', () => this.closeMobile());
+    }
+    window.addEventListener('resize', () => {
+      if(window.innerWidth > 640) this.closeMobile();
+    });
+  },
+
+  toggleMobile(){
+    document.getElementById('app-shell').classList.toggle('sidebar-open');
+  },
+
+  closeMobile(){
+    document.getElementById('app-shell').classList.remove('sidebar-open');
   },
 
   applyUserInfo(){
@@ -1587,6 +2247,16 @@ const Sidebar = {
     document.querySelectorAll('.nav-item[data-page]').forEach(item => {
       item.classList.toggle('active', item.dataset.page === pageId);
     });
+    this.moveIndicator();
+  },
+
+  moveIndicator(){
+    const indicator = document.getElementById('nav-indicator');
+    const activeItem = document.querySelector('.nav-item[data-page].active');
+    if(!indicator || !activeItem) return;
+    indicator.style.transform = `translateY(${activeItem.offsetTop}px)`;
+    indicator.style.height = activeItem.offsetHeight + 'px';
+    indicator.style.opacity = '1';
   }
 };
 
@@ -1600,7 +2270,9 @@ const Router = {
     home: { title:"Home", subtitle:"Overview of your workspace", onEnter: () => Home.render() },
     stock: { title:"Stock", subtitle:"Live inventory from Google Sheets", onEnter: () => Stock.onEnter() },
     attendance: { title:"Attendance", subtitle:"Check in, check out and review your log", onEnter: () => Attendance.onEnter() },
-    transactions: { title:"Transactions", subtitle:"Record stock in/out movements", onEnter: () => Transactions.onEnter() }
+    transactions: { title:"Transactions", subtitle:"Record stock in/out movements", onEnter: () => Transactions.onEnter() },
+    users: { title:"Users", subtitle:"Manage system users and roles", onEnter: () => Users.onEnter() },
+    reports: { title:"Reports", subtitle:"Monthly attendance report & PDF export", onEnter: () => Reports.onEnter() }
   },
   current: null,
 
@@ -1767,11 +2439,13 @@ const Transactions = {
       // جلب الحركات من الـ API
       const data = await Api.getTransactions();
       AppState.transactionsLog = data || [];
-      
+      AppState.isTransactionsLoaded = true;
+
       // رسم الجدول
       this.renderLogTable();
 
     } catch (err) {
+      AppState.isTransactionsLoaded = false;
       console.error("Transactions load error:", err);
       if (emptyEl) emptyEl.style.display = "flex";
       if (typeof Utils !== 'undefined' && Utils.toast) {
@@ -1902,6 +2576,7 @@ const Transactions = {
 
       AppState.transactionsLog.unshift({
         time: new Date().toLocaleString('en-GB', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }),
+        date: new Date().toISOString(),
         code,
         partName: item ? item["Part Name"] : "",
         type: this.selectedType,
@@ -2257,6 +2932,620 @@ const Attendance = {
 };
 
 /* ================================================================
+   USERS PAGE
+   Local session-only user directory (no USERS_API backend yet).
+   ================================================================ */
+const Users = {
+  async onEnter(){
+    if(!AppState.isUsersLoaded){
+      await this.load();
+    } else {
+      this.render();
+    }
+  },
+
+  /**
+   * Load the system's user list from LOGIN_API (?action=users).
+   */
+  async load(){
+    const tbody = document.getElementById('users-tbody');
+    const emptyEl = document.getElementById('users-empty');
+    emptyEl.style.display = "none";
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--text-muted);">Loading users…</td></tr>`;
+
+    try{
+      const data = await Api.getUsers();
+      AppState.usersData = data;
+      AppState.isUsersLoaded = true;
+      this.render();
+    } catch(err){
+      console.error("Users load error:", err);
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--danger);">${Utils.escapeHtml(err.message || "Failed to load users.")}</td></tr>`;
+      Utils.toast(err.message || "Failed to load users", true);
+    }
+  },
+
+  render(){
+    const tbody = document.getElementById('users-tbody');
+    const emptyEl = document.getElementById('users-empty');
+    const countLabel = document.getElementById('users-count-label');
+    const footerLeft = document.getElementById('users-footer-left');
+    const users = AppState.usersData || [];
+
+    if(users.length === 0){
+      tbody.innerHTML = "";
+      emptyEl.style.display = "flex";
+      countLabel.textContent = "0 users";
+      footerLeft.textContent = "—";
+      return;
+    }
+
+    emptyEl.style.display = "none";
+    tbody.innerHTML = users.map(u => `
+      <tr>
+        <td>${Utils.escapeHtml(u.username)}</td>
+        <td>${Utils.escapeHtml(u.name)}</td>
+        <td>${Utils.escapeHtml(u.role)}</td>
+        <td><span class="status-pill ${u.status === 'Active' ? 'present' : 'absent'}">${Utils.escapeHtml(u.status)}</span></td>
+        <td>${Utils.escapeHtml(u.lastActive)}</td>
+      </tr>
+    `).join("");
+
+    countLabel.textContent = users.length + (users.length === 1 ? " user" : " users");
+    footerLeft.textContent = users.length + " total";
+  },
+
+  openModal(){
+    document.getElementById('user-username-input').value = "";
+    document.getElementById('user-name-input').value = "";
+    document.getElementById('user-role-select').value = "Storekeeper";
+    document.getElementById('user-status-select').value = "Active";
+    this.hideError();
+    document.getElementById('user-modal-overlay').classList.add('show');
+  },
+
+  closeModal(){
+    document.getElementById('user-modal-overlay').classList.remove('show');
+  },
+
+  showError(message){
+    const el = document.getElementById('user-modal-error');
+    el.textContent = message;
+    el.classList.add('show');
+  },
+
+  hideError(){
+    const el = document.getElementById('user-modal-error');
+    el.textContent = "";
+    el.classList.remove('show');
+  },
+
+  addUser(){
+    const username = document.getElementById('user-username-input').value.trim();
+    const name = document.getElementById('user-name-input').value.trim();
+    const role = document.getElementById('user-role-select').value;
+    const status = document.getElementById('user-status-select').value;
+
+    this.hideError();
+
+    if(!username){
+      this.showError("Please enter a username.");
+      return;
+    }
+    if(AppState.usersData.some(u => u.username.toLowerCase() === username.toLowerCase())){
+      this.showError("This username already exists.");
+      return;
+    }
+
+    // Session-local only — LOGIN_API only supports GET ?action=users for now.
+    // Add a POST branch there (e.g. action:"createUser") to persist new users.
+    AppState.usersData.unshift({ username, name: name || username, role, status, lastActive:"Never" });
+    this.render();
+    Utils.toast(`User "${username}" added (session only — not yet saved to the sheet)`);
+    this.closeModal();
+  },
+
+  init(){
+    document.getElementById('new-user-btn').addEventListener('click', () => this.openModal());
+    document.getElementById('user-modal-close').addEventListener('click', () => this.closeModal());
+    document.getElementById('user-cancel-btn').addEventListener('click', () => this.closeModal());
+    document.getElementById('user-modal-overlay').addEventListener('click', (e) => {
+      if(e.target.id === 'user-modal-overlay') this.closeModal();
+    });
+    document.getElementById('user-confirm-btn').addEventListener('click', () => this.addUser());
+  }
+};
+
+/* ================================================================
+   REPORTS PAGE
+   Monthly attendance table (one row per employee per day) + PDF export.
+   NOTE: there is no multi-employee attendance backend yet, so per-day
+   Present/Absent status is derived deterministically per employee+date.
+   Swap buildRows() for a real REPORTS_API call once one exists.
+   ================================================================ */
+const Reports = {
+  selectedMonth: null,
+
+  async onEnter(){
+    const input = document.getElementById('report-month-input');
+    if(!input.value){
+      const now = new Date();
+      input.value = Utils.dateKey(now).slice(0, 7); // "YYYY-MM"
+    }
+    this.selectedMonth = input.value;
+
+    const tbody = document.getElementById('report-tbody');
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-muted);">Loading report…</td></tr>`;
+
+    try{
+      if(!AppState.isUsersLoaded) await Users.load();
+      if(!AppState.isAllAttendanceLoaded) await this.loadAllAttendance();
+    } catch(err){
+      console.error("Reports load error:", err);
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--danger);">${Utils.escapeHtml(err.message || "Failed to load report data.")}</td></tr>`;
+      return;
+    }
+
+    // Inventory movement data (Most Received / Most Issued + chart). Loaded
+    // separately so a failure here never blocks the attendance report above.
+    try{
+      if(!AppState.isStockLoaded) await Stock.load();
+      if(!AppState.isTransactionsLoaded) await Transactions.load();
+    } catch(err){
+      console.error("Reports inventory load error:", err);
+    }
+
+    this.populateEmployeeSelect();
+    this.render();
+  },
+
+  async loadAllAttendance(){
+    const data = await Api.getAllAttendance();
+    AppState.allAttendance = data;
+    AppState.isAllAttendanceLoaded = true;
+  },
+
+  /**
+   * Stable, non-empty key for an employee, used as the <option value> and
+   * for matching later. Falls back to the display name when the username
+   * column is blank (common on older sheet rows that predate the username
+   * field but already have real attendance history) so those employees
+   * don't collide with the empty-value placeholder option or with each
+   * other. Trimmed so stray spaces from the sheet don't break matching.
+   */
+  employeeKey(u){
+    const uname = String(u.username || "").trim();
+    if(uname) return uname;
+    return String(u.name || "").trim();
+  },
+
+  findEmployee(employeeKeyValue){
+    const target = String(employeeKeyValue || "").trim().toLowerCase();
+    if(!target) return null;
+    return (AppState.usersData || []).find(u => this.employeeKey(u).toLowerCase() === target) || null;
+  },
+
+  populateEmployeeSelect(){
+    const select = document.getElementById('report-employee-select');
+    const employees = AppState.usersData || [];
+    const previousValue = select.value;
+
+    select.innerHTML = `<option value="">Select an employee…</option>` + employees.map(u =>
+      `<option value="${Utils.escapeHtml(this.employeeKey(u))}">${Utils.escapeHtml(u.name || u.username)}</option>`
+    ).join("");
+
+    // Keep the previous selection if it's still valid, otherwise default to the first employee.
+    if(previousValue && this.findEmployee(previousValue)){
+      select.value = previousValue;
+    } else if(employees.length > 0){
+      select.value = this.employeeKey(employees[0]);
+    }
+  },
+
+  daysInMonth(year, month1based){
+    return new Date(year, month1based, 0).getDate();
+  },
+
+  to12h(h, m){
+    const period = h >= 12 ? "PM" : "AM";
+    let hh = h % 12;
+    if(hh === 0) hh = 12;
+    return String(hh).padStart(2, '0') + ":" + String(m).padStart(2, '0') + " " + period;
+  },
+
+  parse24h(str){
+    const parts = String(str).split(':').map(Number);
+    return [parts[0] || 0, parts[1] || 0];
+  },
+
+  /**
+   * Builds the monthly grid (one row per day) for a single selected
+   * employee, from real data:
+   *  - The employee's display name comes from AppState.usersData (LOGIN_API)
+   *    and is also the key written to the Attendance sheet's User column
+   *    on check-in/out, so matching happens on that name.
+   *  - Each day's check-in/out/status comes from AppState.allAttendance
+   *    (loaded from ATTENDANCE_API).
+   * Only Friday is a day off. Any other day with no matching attendance
+   * row is Absent (not just "not marked").
+   */
+  buildRows(monthKey, employeeUsername){
+    const employee = this.findEmployee(employeeUsername);
+    if(!employee) return [];
+
+    const displayName = employee.name || employee.username;
+    const [year, month] = monthKey.split('-').map(Number);
+    const totalDays = this.daysInMonth(year, month);
+    const today = new Date();
+
+    // Index this employee's real attendance rows by date.
+    const byDate = {};
+    (AppState.allAttendance || []).forEach(rec => {
+      const recUser = rec.user || rec.User;
+      if(!recUser || !rec.date) return;
+      if(String(recUser).trim().toLowerCase() !== String(displayName).trim().toLowerCase()) return;
+      byDate[rec.date] = rec;
+    });
+
+    const rows = [];
+    for(let day = 1; day <= totalDays; day++){
+      const d = new Date(year, month - 1, day);
+      const dateKey = Utils.dateKey(d);
+      const isFriday = d.getDay() === 5; // Friday is the only day off
+      const isFuture = d > today;
+      const rec = byDate[dateKey];
+
+      if(rec){
+        const hasBoth = rec.checkIn && rec.checkOut && rec.checkOut !== '--';
+        rows.push({
+          name: displayName, date: dateKey,
+          checkIn: rec.checkIn ? this.to12h(...this.parse24h(rec.checkIn)) : "—",
+          checkOut: (rec.checkOut && rec.checkOut !== '--') ? this.to12h(...this.parse24h(rec.checkOut)) : "—",
+          hours: hasBoth ? Utils.formatDuration(Utils.minutesBetween(rec.checkIn, rec.checkOut)) : "—",
+          status: rec.status || (hasBoth ? "Present" : "Absent")
+        });
+      } else if(isFriday){
+        rows.push({ name: displayName, date:dateKey, checkIn:"—", checkOut:"—", hours:"—", status:"Weekend" });
+      } else if(isFuture){
+        rows.push({ name: displayName, date:dateKey, checkIn:"—", checkOut:"—", hours:"—", status:"—" });
+      } else {
+        rows.push({ name: displayName, date:dateKey, checkIn:"—", checkOut:"—", hours:"—", status:"Absent" });
+      }
+    }
+    return rows;
+  },
+
+  render(){
+    const monthKey = document.getElementById('report-month-input').value || this.selectedMonth;
+    const employeeUsername = document.getElementById('report-employee-select').value;
+    const tbody = document.getElementById('report-tbody');
+    if(!monthKey) return;
+    this.selectedMonth = monthKey;
+
+    try{
+      this.renderInventorySummary(monthKey);
+    } catch(err){
+      console.error("Inventory summary render error:", err);
+    }
+
+    try{
+      this.renderStockRanking();
+    } catch(err){
+      console.error("Stock ranking render error:", err);
+    }
+
+    if(!employeeUsername){
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-muted);">Select an employee above to view their report.</td></tr>`;
+      document.getElementById('report-count-label').textContent = "—";
+      document.getElementById('report-footer-left').textContent = "—";
+      document.getElementById('report-subtitle-print').textContent = Utils.monthLabel(monthKey);
+      return;
+    }
+
+    const rows = this.buildRows(monthKey, employeeUsername);
+
+    if(rows.length === 0){
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--text-muted);">No data found for this employee.</td></tr>`;
+      document.getElementById('report-count-label').textContent = "0 rows";
+      document.getElementById('report-footer-left').textContent = "—";
+      document.getElementById('report-subtitle-print').textContent = Utils.monthLabel(monthKey);
+      return;
+    }
+
+    tbody.innerHTML = rows.map(r => {
+      const pillClass = r.status.toLowerCase();
+      const statusCell = (r.status === "—")
+        ? "—"
+        : `<span class="status-pill ${pillClass}">${Utils.escapeHtml(r.status)}</span>`;
+      return `
+        <tr>
+          <td>${Utils.escapeHtml(r.name)}</td>
+          <td>${Utils.escapeHtml(r.date)}</td>
+          <td>${Utils.escapeHtml(r.checkIn)}</td>
+          <td>${Utils.escapeHtml(r.checkOut)}</td>
+          <td>${Utils.escapeHtml(r.hours)}</td>
+          <td>${statusCell}</td>
+        </tr>
+      `;
+    }).join("");
+
+    document.getElementById('report-count-label').textContent = rows.length + " rows";
+    document.getElementById('report-footer-left').textContent = rows.length + " records";
+    document.getElementById('report-subtitle-print').textContent = rows[0].name + " — " + Utils.monthLabel(monthKey);
+  },
+
+  /**
+   * Exports a single report card as its own standalone PDF.
+   * @param elementId - id of the card to export (e.g. "report-container")
+   * @param filenamePrefix - base filename, a date/month suffix is appended
+   * @param includeMonth - true to suffix with the selected month (monthly
+   *   reports), false to suffix with today's date (live snapshots like Stock).
+   */
+  downloadPDF(elementId, filenamePrefix, includeMonth){
+    const element = document.getElementById(elementId);
+    if(!element) return;
+    const monthKey = this.selectedMonth || document.getElementById('report-month-input').value;
+    const dateSuffix = includeMonth ? monthKey : Utils.dateKey(new Date());
+
+    // html2canvas doesn't reliably re-render live <canvas> chart elements —
+    // charts can come out truncated or stale in the exported PDF (e.g. only
+    // some of the bars showing). To avoid that, swap each chart canvas for a
+    // static snapshot image of its current bitmap just for the export, then
+    // restore the live canvas right after.
+    const canvases = element.querySelectorAll('canvas');
+    const swaps = [];
+    canvases.forEach(canvas => {
+      if(!canvas.width || !canvas.height) return; // nothing drawn on it yet
+      const img = document.createElement('img');
+      img.src = canvas.toDataURL('image/png', 1.0);
+      img.style.width = '100%';
+      img.style.height = getComputedStyle(canvas).height;
+      img.style.display = 'block';
+      canvas.style.display = 'none';
+      canvas.insertAdjacentElement('afterend', img);
+      swaps.push({ canvas, img });
+    });
+    const restoreCanvases = () => {
+      swaps.forEach(({ canvas, img }) => { img.remove(); canvas.style.display = ''; });
+    };
+
+    const opt = {
+      margin: [0.3, 0.3, 0.3, 0.3],
+      filename: `${filenamePrefix}_${dateSuffix}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        // Don't let each card's own "PDF" button show up inside its export.
+        ignoreElements: (el) => el.classList && el.classList.contains('pdf-hide')
+      },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save().then(restoreCanvases).catch(restoreCanvases);
+  },
+
+  /* ---------- Inventory movement summary (Most Received / Most Issued) ---------- */
+
+  invChart: null,
+
+  /**
+   * Normalizes a transaction record regardless of whether it came from the
+   * STOCK_API sheet (PascalCase keys: Code/Type/Quantity/Date) or was pushed
+   * locally this session on submit (lowercase keys: code/type/quantity/time/date).
+   */
+  normalizeTx(tx){
+    const code = tx.Code ?? tx.code ?? "";
+    const type = String(tx.Type ?? tx.type ?? "").trim().toUpperCase();
+    const quantity = Number(tx.Quantity ?? tx.quantity) || 0;
+    const rawDate = tx.Date ?? tx.date ?? tx.time ?? "";
+    const partName = tx["Part Name"] ?? tx.partName ?? "";
+    return { code: String(code).trim(), type, quantity, rawDate, partName };
+  },
+
+  parseTxDate(raw){
+    if(!raw) return null;
+    const d = new Date(raw);
+    return isNaN(d.getTime()) ? null : d;
+  },
+
+  /**
+   * Aggregates Stock In / Stock Out quantities per product for the given
+   * month from AppState.transactionsLog, using AppState.stockData to look
+   * up a friendly part name when the transaction row doesn't carry one.
+   */
+  buildInventorySummary(monthKey){
+    const totals = {};
+    (AppState.transactionsLog || []).forEach(raw => {
+      const tx = this.normalizeTx(raw);
+      if(!tx.code || !tx.quantity) return;
+      const d = this.parseTxDate(tx.rawDate);
+      if(!d || Utils.dateKey(d).slice(0,7) !== monthKey) return;
+
+      if(!totals[tx.code]){
+        const stockItem = (AppState.stockData || []).find(s => String(s.Code ?? s.code ?? "").trim() === tx.code);
+        totals[tx.code] = {
+          code: tx.code,
+          partName: tx.partName || (stockItem ? stockItem["Part Name"] : "") || tx.code,
+          inQty: 0,
+          outQty: 0
+        };
+      }
+      if(tx.type === "IN") totals[tx.code].inQty += tx.quantity;
+      else if(tx.type === "OUT") totals[tx.code].outQty += tx.quantity;
+    });
+    return Object.values(totals);
+  },
+
+  renderInventorySummary(monthKey){
+    const products = this.buildInventorySummary(monthKey);
+    document.getElementById('inventory-summary-subtitle').textContent = Utils.monthLabel(monthKey);
+
+    const emptyEl = document.getElementById('inventory-summary-empty');
+    const chartWrap = document.querySelector('.inv-chart-wrap');
+    const statsWrap = document.querySelector('.inv-summary-stats');
+
+    if(products.length === 0){
+      emptyEl.style.display = "flex";
+      chartWrap.style.display = "none";
+      statsWrap.style.display = "none";
+      document.getElementById('inv-top-in-name').textContent = "—";
+      document.getElementById('inv-top-in-qty').textContent = "0 units in";
+      document.getElementById('inv-top-out-name').textContent = "—";
+      document.getElementById('inv-top-out-qty').textContent = "0 units out";
+      if(this.invChart){ this.invChart.destroy(); this.invChart = null; }
+      return;
+    }
+
+    emptyEl.style.display = "none";
+    chartWrap.style.display = "block";
+    statsWrap.style.display = "grid";
+
+    const topIn = products.reduce((a, b) => (b.inQty > a.inQty ? b : a), products[0]);
+    const topOut = products.reduce((a, b) => (b.outQty > a.outQty ? b : a), products[0]);
+
+    document.getElementById('inv-top-in-name').textContent = topIn.inQty > 0 ? `${topIn.partName} (${topIn.code})` : "—";
+    Utils.animateNumber(document.getElementById('inv-top-in-qty'), topIn.inQty, ' units in');
+    document.getElementById('inv-top-out-name').textContent = topOut.outQty > 0 ? `${topOut.partName} (${topOut.code})` : "—";
+    Utils.animateNumber(document.getElementById('inv-top-out-qty'), topOut.outQty, ' units out');
+
+    // Top 6 products by total movement (in + out), for a readable chart.
+    const topProducts = [...products]
+      .sort((a, b) => (b.inQty + b.outQty) - (a.inQty + a.outQty))
+      .slice(0, 6);
+
+    const canvas = document.getElementById('inventory-comparison-chart');
+    if(typeof Chart === 'undefined'){
+      console.error("Chart.js failed to load — comparison chart skipped.");
+      chartWrap.style.display = "none";
+      return;
+    }
+    const styles = getComputedStyle(document.documentElement);
+    const accent = styles.getPropertyValue('--accent').trim() || '#12a594';
+    const danger = styles.getPropertyValue('--danger').trim() || '#e5484d';
+    const textSecondary = styles.getPropertyValue('--text-secondary').trim() || '#6b7385';
+    const border = styles.getPropertyValue('--border').trim() || '#e6e8ec';
+
+    if(this.invChart){ this.invChart.destroy(); }
+    this.invChart = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: topProducts.map(p => p.partName || p.code),
+        datasets: [
+          { label: 'Stock In', data: topProducts.map(p => p.inQty), backgroundColor: accent, borderRadius: 4, maxBarThickness: 34 },
+          { label: 'Stock Out', data: topProducts.map(p => p.outQty), backgroundColor: danger, borderRadius: 4, maxBarThickness: 34 }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 650, easing: 'easeOutQuart' },
+        plugins: {
+          legend: { position: 'top', labels: { color: textSecondary, font: { size: 12, weight: '600' }, boxWidth: 12 } },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { color: textSecondary, font: { size: 11 } } },
+          y: { beginAtZero: true, grid: { color: border }, ticks: { color: textSecondary, precision: 0 } }
+        }
+      }
+    });
+  },
+
+  /* ---------- Stock level ranking (highest / lowest stocked items) ---------- */
+
+  stockRankCharts: {},
+
+  renderStockRanking(){
+    const items = (AppState.stockData || [])
+      .map(it => ({
+        code: String(it["Code"] ?? it.code ?? "").trim(),
+        name: it["Part Name"] ?? it.partName ?? "",
+        qty: Number(it["In Stock"]) || 0,
+        unit: it["Unit"] || ""
+      }))
+      .filter(it => it.code);
+
+    const subtitleEl = document.getElementById('stock-ranking-subtitle');
+    if(subtitleEl) subtitleEl.textContent = items.length + (items.length === 1 ? " item in Stock" : " items in Stock");
+
+    const emptyEl = document.getElementById('stock-ranking-empty');
+    const bodyEl = document.querySelector('.stock-ranking-body');
+    const statsWrap = document.getElementById('stock-ranking-card').querySelector('.inv-summary-stats');
+
+    if(items.length === 0){
+      emptyEl.style.display = "flex";
+      if(bodyEl) bodyEl.style.display = "none";
+      if(statsWrap) statsWrap.style.display = "none";
+      Object.values(this.stockRankCharts).forEach(c => c && c.destroy());
+      this.stockRankCharts = {};
+      return;
+    }
+
+    emptyEl.style.display = "none";
+    if(bodyEl) bodyEl.style.display = "grid";
+    if(statsWrap) statsWrap.style.display = "grid";
+
+    const sortedDesc = [...items].sort((a, b) => b.qty - a.qty);
+    const topHigh = sortedDesc.slice(0, 5);
+    const topLow = [...sortedDesc].reverse().slice(0, 5);
+
+    const fmt = it => `${it.name || it.code} (${it.code})`;
+    document.getElementById('stock-highest-name').textContent = fmt(topHigh[0]);
+    Utils.animateNumber(document.getElementById('stock-highest-qty'), topHigh[0].qty, topHigh[0].unit ? ` ${topHigh[0].unit}` : "");
+    document.getElementById('stock-lowest-name').textContent = fmt(topLow[0]);
+    Utils.animateNumber(document.getElementById('stock-lowest-qty'), topLow[0].qty, topLow[0].unit ? ` ${topLow[0].unit}` : "");
+
+    const styles = getComputedStyle(document.documentElement);
+    const accent = styles.getPropertyValue('--accent').trim() || '#12a594';
+    const danger = styles.getPropertyValue('--danger').trim() || '#e5484d';
+    const textSecondary = styles.getPropertyValue('--text-secondary').trim() || '#6b7385';
+    const border = styles.getPropertyValue('--border').trim() || '#e6e8ec';
+
+    if(typeof Chart === 'undefined'){
+      console.error("Chart.js failed to load — stock ranking charts skipped.");
+      return;
+    }
+
+    this.renderRankChart('stock-high-chart', topHigh, accent, textSecondary, border);
+    this.renderRankChart('stock-low-chart', topLow, danger, textSecondary, border);
+  },
+
+  renderRankChart(canvasId, data, color, textSecondary, border){
+    const canvas = document.getElementById(canvasId);
+    if(!canvas) return;
+    if(this.stockRankCharts[canvasId]) this.stockRankCharts[canvasId].destroy();
+    this.stockRankCharts[canvasId] = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: data.map(d => d.name || d.code),
+        datasets: [{ data: data.map(d => d.qty), backgroundColor: color, borderRadius: 4, maxBarThickness: 24 }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 650, easing: 'easeOutQuart' },
+        plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+        scales: {
+          x: { beginAtZero: true, grid: { color: border }, ticks: { color: textSecondary, precision: 0 } },
+          y: { grid: { display: false }, ticks: { color: textSecondary, font: { size: 11 } } }
+        }
+      }
+    });
+  },
+
+  init(){
+    document.getElementById('report-month-input').addEventListener('change', () => this.render());
+    document.getElementById('report-employee-select').addEventListener('change', () => this.render());
+    document.querySelectorAll('[data-pdf-target]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.downloadPDF(btn.dataset.pdfTarget, btn.dataset.pdfName, btn.dataset.pdfMonth === "1");
+      });
+    });
+  }
+};
+
+/* ================================================================
    SEARCH FUNCTIONS
    Instant client-side filtering across the key stock fields.
    ================================================================ */
@@ -2298,6 +3587,8 @@ document.addEventListener('DOMContentLoaded', () => {
   Search.init();
   Attendance.init();
   Transactions.init();
+  Users.init();
+  Reports.init();
 
   document.getElementById('refresh-stock-btn').addEventListener('click', () => Stock.refresh());
 });
