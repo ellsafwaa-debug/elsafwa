@@ -1267,7 +1267,7 @@
     .topbar-title span{ font-size:11px; }
     .topbar-date{ display:none; }
 
-    .page{ padding:14px; }
+    .page{ padding:14px 14px 96px; }
 
     /* Login screen */
     .login-form-panel{ padding:32px 20px; }
@@ -1385,6 +1385,13 @@
     .month-select-wrap .month-select{ min-width:0; flex:1; }
 
     .toast{ left:14px; right:14px; bottom:14px; }
+
+    /* Floating AI chat button was sitting directly over the last bit of
+       content on every page (table rows, save buttons, etc). Page
+       padding above now leaves room for it; shrink it a bit too so it
+       blocks less on a small screen. */
+    .chat-toggle-btn{ width:50px; height:50px; bottom:16px; right:16px; }
+    .chat-panel{ bottom:76px; right:10px; width:calc(100vw - 20px); height:min(70vh, 520px); }
   }
 
   @media (max-width: 400px){
