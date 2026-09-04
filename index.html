@@ -964,6 +964,7 @@
   .report-print-header{
     padding:22px 24px 4px;
     display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    flex-wrap:wrap;
   }
   .report-print-header h3{
     margin:0 0 4px 0; font-family:var(--font-display); font-size:18px; font-weight:800; color:var(--text-primary);
@@ -1367,6 +1368,21 @@
 
     /* Reports toolbar */
     .reports-toolbar-left{ width:100%; gap:12px; }
+
+    /* Card headers (title + action button/group) — was cramming the
+       title and buttons onto one row, squeezing/overlapping them on
+       narrow screens. Stack title above actions, full width. */
+    .report-print-header{ flex-direction:column; align-items:stretch; padding:18px 16px 4px; }
+    .report-print-header > button{ width:100%; justify-content:center; }
+    .payroll-header-actions{ width:100%; justify-content:flex-start; }
+    .payroll-payment-controls{ width:100%; flex-wrap:wrap; }
+    .payroll-payment-controls .month-select{ flex:1; min-width:120px; }
+    .payroll-payment-controls #payroll-mark-paid-btn{ flex:1; justify-content:center; }
+    .payroll-paid-badge{ width:100%; }
+
+    /* Employee/period filters and add-record buttons above tables */
+    .month-select-wrap{ flex-wrap:wrap; }
+    .month-select-wrap .month-select{ min-width:0; flex:1; }
 
     .toast{ left:14px; right:14px; bottom:14px; }
   }
